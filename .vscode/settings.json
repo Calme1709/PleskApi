@@ -1,0 +1,10 @@
+{
+	"git.enabled": true,
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"editor.tabSize": 4,
+    "editor.detectIndentation": false,
+	"eslint.options": {
+		"configFile": "./node_modules/@calme1709/back-end-config/.eslintrc.js"
+	},
+	"tsimporter.doubleQuotes": true
+}

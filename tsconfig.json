@@ -1,0 +1,39 @@
+{
+	"compilerOptions": {
+		"target": "ES5",
+		"module": "CommonJS",
+		"lib": [
+			"ESNext",
+			"DOM"
+        ],
+		"removeComments": true,
+		"downlevelIteration": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"strict": true,
+		"noImplicitAny": true,
+		"strictNullChecks": true,
+		"strictFunctionTypes": true,
+		"strictBindCallApply": true,
+		"strictPropertyInitialization": true,
+		"noImplicitThis": true,
+		"alwaysStrict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"esModuleInterop": true,
+		"watch": false,
+		"resolveJsonModule": true,
+		"baseUrl": "src/",
+        "paths": {
+            "@middleware": [ "middleware/index.ts" ],
+            "@routes": [ "routes/index.ts" ],
+			"@utils": [ "utils/index.ts" ],
+			"@utils/*": [ "utils/*"],
+			"@config": [ "config.ts" ],
+			"@services/*": [ "services/*" ],
+			"@models/*": [ "models/*" ]
+        }
+	}
+}

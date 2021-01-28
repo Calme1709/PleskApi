@@ -1,0 +1,1 @@
+export { default as parseXmlToJson } from "./parseXmlToJson";
