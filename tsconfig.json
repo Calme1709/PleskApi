@@ -25,15 +25,9 @@
 		"esModuleInterop": true,
 		"watch": false,
 		"resolveJsonModule": true,
-		"baseUrl": "src/",
+		"baseUrl": "./",
         "paths": {
-            "@middleware": [ "middleware/index.ts" ],
-            "@routes": [ "routes/index.ts" ],
-			"@utils": [ "utils/index.ts" ],
-			"@utils/*": [ "utils/*"],
-			"@config": [ "config.ts" ],
-			"@services/*": [ "services/*" ],
-			"@models/*": [ "models/*" ]
+			"@utils": [ "src/utils/index.ts" ]
         }
 	}
 }

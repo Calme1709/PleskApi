@@ -1,6 +1,6 @@
 import https from "https";
 import { Buffer } from "buffer";
-import { parseXmlToJson } from "../utils";
+import { parseXmlToJson } from "@utils";
 import PleskApi from "..";
 
 interface IApiErrorResponse {
@@ -80,8 +80,8 @@ export default class Operator<OperatorName extends string> {
 					data += chunk;
 				});
 
-				response.on("end", () => {
-					const result = parseXmlToJson<ApiResponse<OperatorName, OperationName, ResponseType>>(data);
+				response.on("end", async () => {
+					const result = await parseXmlToJson<ApiResponse<OperatorName, OperationName, ResponseType>>(data);
 
 					//TODO: Custom parsing of Arrays (admin-domain-list, property, etc)
 					if("system" in result.packet) {
