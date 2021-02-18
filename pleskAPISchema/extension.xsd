@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <xs:include schemaLocation="plesk_common.xsd"/>
+    <xs:complexType name="ExtensionInputType">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="install">
+                <xs:annotation>
+                    <xs:documentation>Download and install an extension with the given URL or ID</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:choice>
+                        <xs:element name="url" type="ExtensionUrlType"/>
+                        <xs:element name="id" type="ExtensionIdType"/>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="uninstall">
+                <xs:annotation>
+                    <xs:documentation>Uninstall an extension with the given ID</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="id" type="ExtensionIdType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="call">
+                <xs:annotation>
+                    <xs:documentation>Call extension via API-RPC</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:any processContents="skip" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="get">
+                <xs:annotation>
+                    <xs:documentation>Get list of installed extensions</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="filter" minOccurs="0" type="ExtensionSelectionFilter">
+                            <xs:annotation>
+                                <xs:documentation>Filter extensions to be retrieved</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="ExtensionOutputType">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="install">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="resultType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="uninstall">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="resultType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="call">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="resultFilterType">
+                                        <xs:sequence>
+                                            <xs:any processContents="skip" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="get">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="resultFilterType">
+                                        <xs:sequence minOccurs="0">
+                                            <xs:element name="details" maxOccurs="unbounded">
+                                                <xs:annotation>
+                                                    <xs:documentation>Extensions data. Will not be returned if status isn't "ok"</xs:documentation>
+                                                </xs:annotation>
+                                                <xs:complexType>
+                                                    <xs:annotation>
+                                                        <xs:documentation>Extension details</xs:documentation>
+                                                    </xs:annotation>
+                                                    <xs:all>
+                                                        <xs:element name="id" type="string" minOccurs="0"/>
+                                                        <xs:element name="name" type="string" minOccurs="0"/>
+                                                        <xs:element name="version" type="string" minOccurs="0"/>
+                                                        <xs:element name="release" type="string" minOccurs="0"/>
+                                                        <xs:element name="active" type="boolean" minOccurs="0"/>
+                                                    </xs:all>
+                                                </xs:complexType>
+                                            </xs:element>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="ExtensionSelectionFilter">
+        <xs:annotation>
+            <xs:documentation>Filter extensions list</xs:documentation>
+        </xs:annotation>
+        <xs:choice minOccurs="1">
+            <xs:element name="id" type="ExtensionIdType" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Extension ID</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+    <xs:simpleType name="ExtensionIdType">
+        <xs:annotation>
+            <xs:documentation>ID</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="string">
+            <xs:minLength value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ExtensionUrlType">
+        <xs:annotation>
+            <xs:documentation>URL</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="255"/>
+            <xs:whiteSpace value="collapse"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:include schemaLocation="plesk_common.xsd"/>
+	<xs:complexType name="IpResponseType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="result">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="ip_address" type="ip_address" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>New IP address value</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get">
+				<xs:annotation>
+					<xs:documentation>IP address(es) listing result</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice maxOccurs="unbounded">
+						<xs:element name="result">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="addresses" minOccurs="0">
+												<xs:complexType>
+													<xs:choice minOccurs="0" maxOccurs="unbounded">
+														<xs:element name="ip_info">
+															<xs:annotation>
+																<xs:documentation>Since Plesk API protocol 1.3.5</xs:documentation>
+															</xs:annotation>
+															<xs:complexType>
+																<xs:all>
+																	<xs:element name="ip_address" type="ip_address"/>
+																	<xs:element name="netmask" type="ip_address"/>
+																	<xs:element name="type" type="ipType"/>
+																	<xs:element name="interface" type="netInterface"/>
+                                                                    <xs:element name="public_ip_address" type="ip_address" minOccurs="0"/>
+                                                                </xs:all>
+															</xs:complexType>
+														</xs:element>
+													</xs:choice>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="set">
+				<xs:annotation>
+					<xs:documentation>Setup operation result</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="ip_address" type="ip_address">
+												<xs:annotation>
+													<xs:documentation>Operated IP addresses</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="del">
+				<xs:annotation>
+					<xs:documentation>IP address(es) deleting result</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="ip_address" type="ip_address">
+												<xs:annotation>
+													<xs:documentation>Deleted IP addresses</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+</xs:schema>

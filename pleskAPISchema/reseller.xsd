@@ -1,0 +1,709 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <xs:include schemaLocation="plesk_client.xsd"/>
+    <xs:complexType name="ResellerInput">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="add" type="ResellerAddInput"/>
+            <xs:element name="set" type="ResellerSetInput"/>
+            <xs:element name="get" type="ResellerGetInput"/>
+            <xs:element name="del" type="ResellerDelInput"/>
+            <xs:element name="ippool-add-ip" type="ResellerIpPoolOperation">
+                <xs:annotation>
+                    <xs:documentation>Add IP address(es) to reseller's/client's IP pool</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ippool-del-ip" type="ResellerIpPoolDelInput">
+                <xs:annotation>
+                    <xs:documentation>Delete the IP address(es) from the reseller's/client's IP pool</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ippool-set-ip" type="ipPoolResellerSet">
+                <xs:annotation>
+                    <xs:documentation>Reseller has ability to change ip type in his pool</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="cform-buttons-list">
+                <xs:annotation>
+                    <xs:documentation>List reseller control form buttons</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="filter" type="ResellerSelectionFilter">
+                            <xs:annotation>
+                                <xs:documentation>Fliter resellers to be listed</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="get-limit-descriptor">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="filter" type="ResellerSelectionFilter">
+                            <xs:annotation>
+                                <xs:documentation>Fliter resellers to get limits descriptor</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="get-permission-descriptor">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="filter" type="ResellerSelectionFilter">
+                            <xs:annotation>
+                                <xs:documentation>Filter resellers to get permissions descriptor</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="convert-to-customer">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="filter" type="ResellerSelectionFilter">
+                            <xs:annotation>
+                                <xs:documentation>Filter resellers</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="plan-name" type="string" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="switch-subscription">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="filter" type="ResellerSelectionFilter"/>
+                        <xs:choice>
+                            <xs:element name="plan-guid" type="string"/>
+                            <xs:element name="no-plan"/>
+                            <xs:element name="plan-external-id" type="string"/>
+                        </xs:choice>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="sync-subscription">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="filter" type="ResellerSelectionFilter">
+                            <xs:annotation>
+                                <xs:documentation>Filter resellers</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="add-package" type="ResellerApplicationInput"/>
+            <xs:element name="remove-package" type="ResellerApplicationInput"/>
+            <xs:element name="enable-aps-filter" type="ResellerApsFilterTypeInput"/>
+            <xs:element name="disable-aps-filter" type="ResellerApsFilterTypeInput"/>
+            <xs:element name="get-domain-list">
+                <xs:annotation>
+                    <xs:documentation>Get list of domains for a reseller</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="filter" type="ResellerSelectionFilter">
+                            <xs:annotation>
+                                <xs:documentation>Filter resellers</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="ResellerAddInput">
+        <xs:sequence>
+            <xs:element name="gen-info" type="ResellerAddGenInfo"/>
+            <xs:element name="limits" type="ResellerLimits" minOccurs="0"/>
+            <xs:element name="permissions" type="clientPerms" minOccurs="0"/>
+            <xs:choice minOccurs="0">
+                <xs:element name="plan-id" type="id_type">
+                    <xs:annotation>
+                        <xs:documentation> Resellers template id</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="plan-name" type="string">
+                    <xs:annotation>
+                        <xs:documentation> Resellers template name</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="plan-guid" type="string">
+                    <xs:annotation>
+                        <xs:documentation> Resellers template guid</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="plan-external-id" type="string">
+                    <xs:annotation>
+                        <xs:documentation> Resellers template external id</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ResellerSetInput">
+        <xs:sequence>
+            <xs:element name="filter" type="ResellerSelectionFilter">
+                <xs:annotation>
+                    <xs:documentation>Filter clients to be refreshed</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="values">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="gen-info" type="ResellerSetGenInfo" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation>client client info</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="limits" type="ResellerLimits" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation>Client limits</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="permissions" type="clientPerms" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation>Client Permissions</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ResellerSelectionFilter">
+        <xs:annotation>
+            <xs:documentation>Fliter resellers list</xs:documentation>
+        </xs:annotation>
+        <xs:choice minOccurs="0">
+            <xs:element name="id" type="id_type" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>Reseller ID</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="login" type="string" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>Reseller login</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="guid" type="string" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>Reseller GUID</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="all" type="NoneType">
+                <xs:annotation>
+                    <xs:documentation>All resellers on server</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="external-id" type="string" maxOccurs="unbounded"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="ResellerGetInput">
+        <xs:sequence>
+            <xs:element name="filter" type="ResellerSelectionFilter">
+                <xs:annotation>
+                    <xs:documentation>Filter resellers to be retrieved</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="dataset" type="ResellerDataset">
+                <xs:annotation>
+                    <xs:documentation>Resellers information to be retrieved</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ResellerDelInput">
+        <xs:sequence>
+            <xs:element name="filter" type="ResellerSelectionFilter">
+                <xs:annotation>
+                    <xs:documentation>Fliter Resellers to be deleted</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ResellerIp">
+        <xs:sequence>
+            <xs:element name="ip-address" type="ip_address"/>
+            <xs:element name="ip-type" type="string"/>
+            <!-- may be type 'ip type' exists-->
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ResellerLimits">
+        <xs:annotation>
+            <xs:documentation>Reseller Limits</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="resource-policy" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="oversell" type="boolean" minOccurs="0"/>
+                        <xs:element name="overuse" minOccurs="0">
+                            <xs:simpleType>
+                                <xs:restriction base="string">
+                                    <xs:enumeration value="notify"/>
+                                    <xs:enumeration value="block"/>
+                                    <xs:enumeration value="normal"/>
+                                    <xs:enumeration value="not_suspend"/>
+                                    <xs:enumeration value="not_suspend_notify"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="limit" type="PleskLimitType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ResellerDataset">
+        <xs:annotation>
+            <xs:documentation>Data to be operated</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="gen-info" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>General client info</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="stat" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Client statistics</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="permissions" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Client permissions</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="limits" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Client limits</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ippool" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>IP pool configuration</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="subscriptions" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ResellerAddGenInfo">
+        <xs:annotation>
+            <xs:documentation>Reseller adding data</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="cname" type="string" minOccurs="0"/>
+            <xs:element name="pname" type="string"/>
+            <xs:element name="login" type="string"/>
+            <xs:element name="passwd" type="string"/>
+            <xs:element name="status" type="objectStatus" default="0" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>0:ACTIVE, 16:DISABLED_BY ADMIN, 4:UNDER BACKUP/RESTORE, 256: EXPIRED</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="phone" type="string" minOccurs="0"/>
+            <xs:element name="fax" type="string" minOccurs="0"/>
+            <xs:element name="email" type="string" minOccurs="0"/>
+            <xs:element name="address" type="string" minOccurs="0"/>
+            <xs:element name="city" type="string" minOccurs="0"/>
+            <xs:element name="state" type="string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Should be filled for US country</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="pcode" type="string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Should be filled for US country</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="country" type="string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Example: US</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="locale" type="string" default="en" minOccurs="0"/>
+            <xs:element name="external-id" type="string" minOccurs="0"/>
+            <xs:element name="description" type="string" minOccurs="0"/>
+            <xs:element name="power-user" type="boolean" default="false" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ResellerSetGenInfo">
+        <xs:annotation>
+            <xs:documentation>Reseller setting data</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="cname" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="string"/>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="pname" type="string" minOccurs="0"/>
+            <xs:element name="login" type="string" minOccurs="0"/>
+            <xs:element name="passwd" type="string" minOccurs="0"/>
+            <xs:element name="status" type="objectStatus" default="0" minOccurs="0"/>
+            <xs:element name="phone" type="string" minOccurs="0"/>
+            <xs:element name="fax" type="string" minOccurs="0"/>
+            <xs:element name="email" type="string" minOccurs="0"/>
+            <xs:element name="address" type="string" minOccurs="0"/>
+            <xs:element name="city" type="string" minOccurs="0"/>
+            <xs:element name="state" type="string" minOccurs="0"/>
+            <xs:element name="pcode" type="string" minOccurs="0"/>
+            <xs:element name="country" type="string" minOccurs="0"/>
+            <xs:element name="locale" type="string" default="en" minOccurs="0"/>
+            <xs:element name="guid" type="NoneType" minOccurs="0"/>
+            <xs:element name="external-id" type="string" minOccurs="0"/>
+            <xs:element name="description" type="string" minOccurs="0"/>
+            <xs:element name="power-user" type="boolean" default="false" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ResellerIpPoolOperation">
+        <xs:annotation>
+            <xs:documentation>Reseller's IP pool data request</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="reseller-id" type="id_type"/>
+                <xs:element name="external-id" type="string"/>
+            </xs:choice>
+            <xs:element name="ip" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ip-address" type="ip_address"/>
+                        <xs:element name="ip-type" type="ipType" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ResellerIpPoolDelInput">
+        <xs:annotation>
+            <xs:documentation>Reseller's IP pool address removal request</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="reseller-id" type="id_type"/>
+                <xs:element name="external-id" type="string"/>
+            </xs:choice>
+            <xs:element name="ip-address" type="ip_address" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ipPoolResellerSet">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="reseller-id" type="id_type"/>
+                <xs:element name="external-id" type="string"/>
+            </xs:choice>
+            <xs:element name="filter">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ip-address" type="ip_address" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="values">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ip-type" type="ipType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ResellerOutput">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="add" type="ResellerAddOutput"/>
+            <xs:element name="set">
+                <xs:annotation>
+                    <xs:documentation>Response on modifying reseller</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="get" type="ResellerGetOutput"/>
+            <xs:element name="del">
+                <xs:annotation>
+                    <xs:documentation>Response on reseller removing</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ippool-add-ip" type="ResellerIpPoolOperationOutput"/>
+            <xs:element name="ippool-del-ip" type="ResellerIpPoolOperationOutput"/>
+            <xs:element name="ippool-set-ip" type="ResellerIpPoolOperationOutput"/>
+            <xs:element name="cform-buttons-list" type="ResellerCFormButtonsListOutput"/>
+            <xs:element name="get-limit-descriptor" type="ResellerDescriptorOutput"/>
+            <xs:element name="get-permission-descriptor" type="ResellerDescriptorOutput"/>
+            <xs:element name="switch-subscription">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="resultFilterType">
+                                        <xs:sequence minOccurs="0">
+                                            <xs:element name="problems" type="string" minOccurs="0"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="convert-to-customer">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="sync-subscription">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="resultFilterType">
+                                        <xs:sequence minOccurs="0">
+                                            <xs:element name="problems" type="string" minOccurs="0"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="add-package">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="remove-package">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="enable-aps-filter">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="disable-aps-filter">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="get-domain-list" type="resultDomainListOutputType" maxOccurs="unbounded"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="ResellerAddOutput">
+        <xs:sequence>
+            <xs:element name="result">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="resultType">
+                            <xs:sequence minOccurs="0">
+                                <xs:element name="id" type="id_type">
+                                    <xs:annotation>
+                                        <xs:documentation>New reseller ID on success</xs:documentation>
+                                    </xs:annotation>
+                                </xs:element>
+                                <xs:element name="guid" type="string">
+                                    <xs:annotation>
+                                        <xs:documentation>New reseller GUID on success</xs:documentation>
+                                    </xs:annotation>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ResellerGetOutput">
+        <xs:sequence>
+            <xs:element name="result" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="resultFilterType">
+                            <xs:sequence minOccurs="0">
+                                <xs:element name="data" type="ResellerData" minOccurs="0">
+                                    <xs:annotation>
+                                        <xs:documentation>Reselllers data. Will not be returned if status isn't "ok"</xs:documentation>
+                                    </xs:annotation>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ResellerData">
+        <xs:annotation>
+            <xs:documentation>Information about reseller</xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name="gen-info" type="ResellerGetGenInfo" minOccurs="0"/>
+            <xs:element name="stat" type="ResellerStatType" minOccurs="0"/>
+            <xs:element name="permissions" type="clientPerms" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Reseller Permissions</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="limits" type="ResellerLimits" minOccurs="0"/>
+            <xs:element name="ippool" type="ipPoolType" minOccurs="0"/>
+            <xs:element name="subscriptions" type="SubscriptionsList" minOccurs="0"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="ResellerGetGenInfo">
+        <xs:annotation>
+            <xs:documentation>General information about reseller</xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name="cr-date" type="date"/>
+            <xs:element name="cname" type="string"/>
+            <xs:element name="pname" type="string"/>
+            <xs:element name="login" type="string"/>
+            <xs:element name="status" type="objectStatus" default="0"/>
+            <xs:element name="phone" type="string"/>
+            <xs:element name="fax" type="string"/>
+            <xs:element name="email" type="string"/>
+            <xs:element name="address" type="string"/>
+            <xs:element name="city" type="string"/>
+            <xs:element name="state" type="string"/>
+            <xs:element name="pcode" type="string"/>
+            <xs:element name="country" type="string"/>
+            <xs:element name="locale" type="string" default="en"/>
+            <xs:element name="password" type="string" minOccurs="0"/>
+            <xs:element name="password-type" type="string" minOccurs="0"/>
+            <xs:element name="guid" type="string" minOccurs="0"/>
+            <xs:element name="external-id" type="string" minOccurs="0"/>
+            <xs:element name="description" type="string" minOccurs="0"/>
+            <xs:element name="power-user" type="boolean" default="false" minOccurs="0"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="ResellerStatType">
+        <xs:annotation>
+            <xs:documentation>Resellers statistics</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="active-clients" type="unsignedInt" default="0"/>
+            <xs:element name="active-domains" type="unsignedInt" default="0"/>
+            <xs:element name="clients" type="unsignedInt" default="0"/>
+            <xs:element name="domains" type="unsignedInt" default="0"/>
+            <xs:element name="subdomains" type="unsignedInt" default="0"/>
+            <xs:element name="domain-aliases" type="unsignedInt" default="0"/>
+            <xs:element name="disk-space" type="size" default="0"/>
+            <xs:element name="web-users" type="unsignedInt" default="0"/>
+            <xs:element name="data-bases" type="unsignedInt" default="0"/>
+            <xs:element name="postboxs" type="unsignedInt" default="0"/>
+            <xs:element name="mbox-quota" type="size" default="0"/>
+            <xs:element name="redirects" type="unsignedInt" default="0"/>
+            <xs:element name="mail-groups" type="unsignedInt" default="0"/>
+            <xs:element name="mail-resps" type="unsignedInt" default="0"/>
+            <xs:element name="mail-lists" type="unsignedInt" default="0"/>
+            <xs:element name="mssql-data-bases" type="unsignedInt" default="0"/>
+            <xs:element name="traffic" type="size">
+                <xs:annotation>
+                    <xs:documentation>Monthly traffic in bytes</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="traffic-prevday" type="size">
+                <xs:annotation>
+                    <xs:documentation>Total traffic for prev.day ( in bytes)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ResellerCFormButtonsListOutput">
+        <xs:sequence>
+            <xs:element name="result" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="resultFilterType">
+                            <xs:sequence minOccurs="0">
+                                <xs:element name="button" type="buttonDataType" maxOccurs="unbounded">
+                                    <xs:annotation>
+                                        <xs:documentation>Buttons list if no error occured</xs:documentation>
+                                    </xs:annotation>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ResellerDescriptorOutput">
+        <xs:sequence>
+            <xs:element name="result" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="resultFilterType">
+                            <xs:sequence minOccurs="0">
+                                <xs:element name="descriptor" type="ObjectDescriptor" minOccurs="0"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ResellerIpPoolOperationOutput">
+        <xs:annotation>
+            <xs:documentation>IP pool operation result</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="result" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="resultType">
+                            <xs:choice minOccurs="0">
+                                <xs:element name="ip-address" type="ip_address"/>
+                                <xs:element name="reseller-id" type="id_type"/>
+                            </xs:choice>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ResellerApplicationInput">
+        <xs:sequence>
+            <xs:element name="filter" type="ResellerSelectionFilter">
+                <xs:annotation>
+                    <xs:documentation>Filter objects to be updated</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="package" type="ApplicationInput" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ResellerApsFilterTypeInput">
+        <xs:sequence>
+            <xs:element name="filter" type="ResellerSelectionFilter">
+                <xs:annotation>
+                    <xs:documentation>Filter objects to be updated</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,637 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_domain.xsd"/>
+	<xs:include schemaLocation="plesk_mailname.xsd"/>
+	<xs:include schemaLocation="plesk_dns.xsd"/>
+	<xs:complexType name="DomainTemplateInputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add" type="DomainTemplateAddInputType"/>
+			<xs:element name="get" type="DomainTemplateGetInputType"/>
+			<xs:element name="del" type="DomanTemplateDeleteInputType"/>
+			<xs:element name="set" type="DomainTemplateSetInputType"/>
+			<xs:element name="add-package" type="ServicePlanApplicationInput"/>
+			<xs:element name="remove-package" type="ServicePlanApplicationInput"/>
+			<xs:element name="enable-aps-filter" type="ServicePlanApsFilterInputType"/>
+			<xs:element name="disable-aps-filter" type="ServicePlanApsFilterInputType"/>
+			<xs:element name="add-plan-item" type="ServicePlanPlanItemInputType"/>
+			<xs:element name="remove-plan-item" type="ServicePlanPlanItemInputType"/>
+			<xs:element name="get-limit-descriptor" type="DomainTemplateGetInputType"/>
+			<xs:element name="get-permission-descriptor" type="DomainTemplateGetInputType"/>
+			<xs:element name="get-physical-hosting-descriptor" type="DomainTemplateGetInputType"/>
+			<xs:element name="db-servers" type="DomainTemplateDbServersInputType"/>
+            <xs:element name="duplicate" type="DomainTemplateDuplicateInputType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="DomainTemplatePHostingPreferences">
+		<xs:all minOccurs="0">
+			<xs:element name="ftp_quota" type="int" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Hard Disk Quota that specified in bytes</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ssl" type="boolean" minOccurs="0"/>
+			<xs:element name="shell" default="/bin/false" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>system shell</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="php" type="boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>PHP support</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ssi" type="boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>SSI support</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ssi_html" type="boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Use SSI for *.htm, *.html files (supported by Plesk for Windows)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="cgi" type="boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>CGI support</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="mod_perl" type="boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>mod_perl support</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="mod_python" type="boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>mod_python support</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="asp" type="boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Apache ASP support</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="asp_dot_net" type="boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>ASP dot net support</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="webstat" type="webstatType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Webserver statistics processor</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="webstat_protected" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="errdocs" type="boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Custom Error Documents</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="at_domains" type="boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>@-domains support</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="php_safe_mode" type="boolean" minOccurs="0"/>
+			<xs:element name="sb_publishing" type="boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Publish site using SiteBuilder (since 1.3.5 for Plesk Windows</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="php_isapi" type="boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>run as ISAPI extension (supported by Plesk for Windows)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="managed_runtime_version" type="string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Microsoft ASP.NET version (supported by Plesk for Windows)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="iis-app-pool" type="boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Dedicated IIS Application Pool does not exist (supported by Plesk for Windows</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="fastcgi" type="boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>mod_fcgid support (supported by Pleskf ro Unix only)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="cpu-usage" type="int" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Maximum CPU use (%) (supported by Plesk for Windows only)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="wuscripts" type="boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Allow the web users scripting</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="php-version" type="string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>PHP support (supported by Plesk for Windows only)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="create-sb-subdomains" type="boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Create Blog and Photo Gallery subdomains (supported by Plesk for Windows only)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="DomainTemplateAddInputType">
+		<xs:sequence>
+			<xs:element name="name" type="string">
+				<xs:annotation>
+					<xs:documentation>Template name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice minOccurs="0">
+				<xs:element name="owner-id" type="id_type"/>
+				<xs:element name="owner-login" type="string"/>
+			</xs:choice>
+			<xs:element name="mail" type="DomainTemplateMailPreferences" minOccurs="0"/>
+			<xs:element name="limits" type="domainLimits" minOccurs="0"/>
+			<xs:element name="log-rotation" type="LogRotationType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Enable log rotation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="preferences" type="DomainTemplatePreferecesType" minOccurs="0"/>
+			<xs:element name="hosting" type="DomainTemplateVrtHst" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Physical hosting</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="hosting-type" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="none"/>
+						<xs:enumeration value="vrt_hst"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="performance" type="DomainPerformanceType" minOccurs="0"/>
+			<xs:element name="permissions" type="domainPerms" minOccurs="0"/>
+			<xs:element name="external-id" type="string" minOccurs="0"/>
+			<xs:element name="php-settings" type="phpSettings" minOccurs="0"/>
+			<xs:element name="web-server-settings" type="webServerSettings" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+    <xs:complexType name="DomainTemplateDuplicateInputType">
+        <xs:sequence>
+            <xs:element name="filter" type="DomainTemplateFilterType"/>
+            <xs:choice minOccurs="0">
+                <xs:element name="owner-id" type="id_type"/>
+                <xs:element name="owner-login" type="string"/>
+            </xs:choice>
+            <xs:element name="duplicate-name" type="string"/>
+        </xs:sequence>
+    </xs:complexType>
+	<xs:complexType name="DomainTemplatePreferecesType">
+		<xs:sequence>
+			<xs:element name="stat" type="int" minOccurs="0"/>
+			<xs:element name="maillists" type="boolean" minOccurs="0"/>
+            <xs:element name="mailservice" type="boolean" minOccurs="0"/>
+			<xs:element name="dns_zone_type" type="ZoneType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DomainTemplateFilterType">
+		<xs:choice minOccurs="0">
+			<xs:element name="name" type="string" maxOccurs="unbounded"/>
+			<xs:element name="id" type="id_type" maxOccurs="unbounded"/>
+			<xs:element name="guid" type="string" maxOccurs="unbounded"/>
+			<xs:element name="external-id" type="string" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="DomainTemplateGetInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="DomainTemplateFilterType"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="owner-id" type="id_type"/>
+				<xs:element name="owner-login" type="string"/>
+				<xs:element name="owner-all" type="NoneType"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DomanTemplateDeleteInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="DomainTemplateFilterType"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="owner-id" type="id_type"/>
+				<xs:element name="owner-login" type="string"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DomainTemplateSetInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="DomainTemplateFilterType"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="owner-id" type="id_type"/>
+				<xs:element name="owner-login" type="string"/>
+			</xs:choice>
+			<xs:sequence>
+				<xs:element name="mail" type="DomainTemplateMailPreferences" minOccurs="0"/>
+				<xs:element name="limits" type="domainLimits" minOccurs="0"/>
+				<xs:element name="log-rotation" type="LogRotationType" minOccurs="0"/>
+				<xs:element name="preferences" type="DomainTemplatePreferecesType" minOccurs="0"/>
+				<xs:element name="hosting" type="DomanTemplatePHosting" minOccurs="0"/>
+				<xs:element name="performance" type="DomainPerformanceType" minOccurs="0"/>
+				<xs:element name="permissions" type="domainPerms" minOccurs="0"/>
+				<xs:element name="external-id" type="string" minOccurs="0"/>
+				<xs:element name="name" type="string" minOccurs="0"/>
+				<xs:element name="php-settings" type="phpSettings" minOccurs="0"/>
+				<xs:element name="web-server-settings" type="webServerSettings" minOccurs="0"/>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DomainTemplateOutputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add" type="DomainTemplateAddOutputType"/>
+			<xs:element name="get" type="DomainTemplateGetOutputType"/>
+			<xs:element name="del" type="DomainTemplateDeleteOutputType"/>
+			<xs:element name="set" type="DomainTemplateSetOutputType"/>
+			<xs:element name="add-package">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="DomainTemplateResultFilterType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="remove-package">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="DomainTemplateResultFilterType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="enable-aps-filter">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="DomainTemplateResultFilterType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="disable-aps-filter">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="DomainTemplateResultFilterType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="add-plan-item">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="DomainTemplatePlanItemResultType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="remove-plan-item">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="DomainTemplatePlanItemResultType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-limit-descriptor">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="DomainTemplateDescriptorOutput" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-permission-descriptor">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="DomainTemplateDescriptorOutput" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-physical-hosting-descriptor">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="DomainTemplateDescriptorOutput" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="db-servers" type="DomainTemplateDbServersOutputType"/>
+            <xs:element name="duplicate" type="DomainTemplateAddOutputType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="DomainTemplateAddOutputType">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="id" type="id_type"/>
+								<xs:element name="guid" type="string"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DomainTemplateGetOutputType">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="id" type="id_type" minOccurs="0"/>
+								<xs:element name="name" type="string" minOccurs="0"/>
+								<xs:element name="guid" type="string" minOccurs="0"/>
+								<xs:element name="external-id" type="string" minOccurs="0"/>
+								<xs:element name="owner-id" type="id_type" minOccurs="0"/>
+								<xs:element name="owner-login" type="string" minOccurs="0"/>
+								<xs:sequence>
+									<xs:element name="mail" type="DomainTemplateMailPreferences" minOccurs="0"/>
+									<xs:element name="limits" type="domainLimits" minOccurs="0"/>
+									<xs:element name="log-rotation" type="LogRotationType" minOccurs="0"/>
+									<xs:element name="preferences" type="DomainTemplatePreferecesType" minOccurs="0"/>
+									<xs:element name="hosting" minOccurs="0">
+										<xs:complexType>
+											<xs:choice>
+												<xs:element name="vrt_hst" type="DomainTemplateVrtHst"/>
+												<xs:element name="none" type="NoneType"/>
+											</xs:choice>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="performance" type="DomainPerformanceType" minOccurs="0"/>
+									<xs:element name="permissions" type="domainPerms" minOccurs="0"/>
+									<xs:element name="plan-items" minOccurs="0">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="name" type="string"/>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="aps-filter" type="boolean" minOccurs="0"/>
+									<xs:element name="packages" minOccurs="0">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="package" type="APSIdentifierType" minOccurs="0" maxOccurs="unbounded"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="php-settings" type="phpSettings" minOccurs="0"/>
+									<xs:element name="web-server-settings" type="webServerSettings" minOccurs="0"/>
+								</xs:sequence>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DomanTemplatePHosting">
+		<xs:choice>
+			<xs:element name="vrt_hst" type="DomainTemplateVrtHst"/>
+			<xs:element name="none" type="NoneType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="DomainTemplateDeleteOutputType">
+		<xs:complexContent>
+			<xs:extension base="DomainTemplateResultType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DomainTemplateResultType">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence>
+								<xs:choice minOccurs="0">
+									<xs:element name="id" type="id_type"/>
+									<xs:element name="name" type="string"/>
+									<xs:element name="guid" type="string"/>
+									<xs:element name="external-id" type="string"/>
+								</xs:choice>
+								<xs:element name="problems" type="string" minOccurs="0"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DomainTemplateResultFilterType">
+		<xs:complexContent>
+			<xs:extension base="resultFilterType">
+				<xs:sequence minOccurs="0">
+					<xs:element name="problems" type="string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DomainTemplateSetOutputType">
+		<xs:complexContent>
+			<xs:extension base="DomainTemplateResultType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DomainTemplateVrtHst">
+		<xs:sequence>
+			<xs:element name="property" type="PleskPhysHostingPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DomainTemplateMailPreferences">
+		<xs:sequence>
+			<xs:element name="nonexistent-user" minOccurs="0">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="bounce" type="string">
+							<xs:annotation>
+								<xs:documentation>Bounce with message </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="forward" type="string">
+							<xs:annotation>
+								<xs:documentation> Forward to address</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="reject"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="webmail" type="string" minOccurs="0"/>
+            <xs:element name="maillists" type="boolean" minOccurs="0"/>
+            <xs:element name="mailservice" type="boolean" minOccurs="0"/>
+            <xs:element name="outgoing-messages-mbox-limit" type="string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Mailname outgoing messages (per hour)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="outgoing-messages-domain-limit" type="string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Domain outgoing messages (per hour)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="outgoing-messages-subscription-limit" type="string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Subscription outgoing messages (per hour)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="outgoing-messages-enable-sendmail" type="booleanWithDefault" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Scripts will be able to send mail even when the limits on outgoing messages are reached for the corresponding mailbox and domain.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="outgoing-messages-overlimit-percent" type="int" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Percentage of email messages to accept into mail queue and retry for delivery in next hour</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ServicePlanApplicationInput">
+		<xs:sequence>
+			<xs:element name="filter" type="DomainTemplateFilterType"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="owner-id" type="id_type"/>
+				<xs:element name="owner-login" type="string"/>
+			</xs:choice>
+			<xs:element name="package" type="ApplicationInput" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ServicePlanApsFilterInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="DomainTemplateFilterType">
+				<xs:annotation>
+					<xs:documentation>Filter objects to be updated</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice minOccurs="0">
+				<xs:element name="owner-id" type="id_type"/>
+				<xs:element name="owner-login" type="string"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ServicePlanPlanItemInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="DomainTemplateFilterType"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="owner-id" type="id_type"/>
+				<xs:element name="owner-login" type="string"/>
+			</xs:choice>
+			<xs:element name="plan-item">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="name" type="string"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DomainTemplatePlanItemResultType">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:sequence>
+					<xs:choice minOccurs="0">
+						<xs:element name="id" type="id_type"/>
+						<xs:element name="name" type="string"/>
+						<xs:element name="guid" type="string"/>
+						<xs:element name="external-id" type="string"/>
+					</xs:choice>
+					<xs:element name="item" type="string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DomainTemplateDescriptorOutput">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:sequence>
+					<xs:choice minOccurs="0">
+						<xs:element name="id" type="id_type"/>
+						<xs:element name="name" type="string"/>
+						<xs:element name="guid" type="string"/>
+						<xs:element name="external-id" type="string"/>
+					</xs:choice>
+					<xs:element name="descriptor" type="ObjectDescriptor" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DomainTemplateDbServersInputType">
+		<xs:choice>
+			<xs:element name="add" type="DomainTemplateDbServerInput"/>
+			<xs:element name="remove" type="DomainTemplateDbServerInput"/>
+			<xs:element name="list">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="DomainTemplateFilterType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="DomainTemplateDbServerInput">
+		<xs:sequence>
+			<xs:element name="filter" type="DomainTemplateFilterType"/>
+			<xs:element name="db-server" type="dbServerInput" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DomainTemplateDbServersOutputType">
+		<xs:choice>
+			<xs:element name="add">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="remove">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="list">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultFilterType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="db-server" type="dbServerOutput" minOccurs="0" maxOccurs="unbounded"/>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="webServerSettings">
+		<xs:annotation>
+			<xs:documentation>Web server settings</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="additional" type="string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="additional-ssl" type="string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="additional-nginx" type="string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="restrict-follow-sym-links" type="string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="nginx-proxy-mode" type="string" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

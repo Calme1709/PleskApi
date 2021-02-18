@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="common.xsd"/>
+	<xs:include schemaLocation="plesk_custom_button.xsd"/>
+	<xs:complexType name="UIResponseType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="create-custombutton">
+				<xs:annotation>
+					<xs:documentation>Creation of simple custom button or custom button linked with site application.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="id" type="id_type">
+												<xs:annotation>
+													<xs:documentation>Database ID of the newly created custom button</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-custombutton">
+				<xs:annotation>
+					<xs:documentation>Retrieving information about custom button.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="id" type="id_type">
+												<xs:annotation>
+													<xs:documentation>Database ID of custom button</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="owner" type="CBOwner">
+												<xs:annotation>
+													<xs:documentation>Custom button's owner specification</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="properties" type="CBProps"/>
+											<xs:element name="url-components" type="CBUrlComponents"/>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="delete-custombutton">
+				<xs:annotation>
+					<xs:documentation>Removal of specified custom buttons</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="id" type="id_type">
+												<xs:annotation>
+													<xs:documentation>Database ID of the removed custom button</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-navigation" type="GetNavigationOutputType"/>
+			<xs:element name="branding-theme-install" type="BrandingResult"/>
+			<xs:element name="branding-theme-uninstall" type="BrandingResult"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="GetNavigationOutputType">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="navigation" type="string"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BrandingResult">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

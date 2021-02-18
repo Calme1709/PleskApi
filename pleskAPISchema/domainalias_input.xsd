@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_common.xsd"/>
+	<xs:include schemaLocation="plesk_domainalias.xsd"/>
+	<xs:complexType name="domainAliasFilterType">
+		<xs:choice minOccurs="0">
+			<xs:element name="id" type="id_type" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Alias identifier</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="name" type="string" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Display alias name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="site-id" type="id_type" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>domain identifier</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="site-name" type="string" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Display domain name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="DomainAliasInputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="create" type="aliasInfoType"/>
+			<xs:element name="get">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainAliasFilterType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="set">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainAliasFilterType"/>
+						<xs:element name="settings" type="Settings"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="delete">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainAliasFilterType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="rename">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:choice>
+							<xs:element name="id" type="id_type"/>
+							<xs:element name="name" type="string">
+								<xs:annotation>
+									<xs:documentation>Display alias name</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:choice>
+						<xs:element name="new_name">
+							<xs:annotation>
+								<xs:documentation>Display name</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-supported-services" type="NoneType"/>
+		</xs:choice>
+	</xs:complexType>
+</xs:schema>

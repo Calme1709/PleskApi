@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_client.xsd"/>
+	<xs:include schemaLocation="reseller.xsd"/>
+	<xs:complexType name="ResellerTemplateInputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add" type="ResellerTemplateAddInputType"/>
+			<xs:element name="get" type="ResellerTemplateGetInputType"/>
+			<xs:element name="del" type="ResellerTemplateDelInputType"/>
+			<xs:element name="set" type="ResellerTemplateSetInputType"/>
+			<xs:element name="add-package" type="ResellerPlanApplicationInput"/>
+			<xs:element name="remove-package" type="ResellerPlanApplicationInput"/>
+			<xs:element name="get-limit-descriptor"/>
+			<xs:element name="get-permission-descriptor"/>
+			<xs:element name="enable-aps-filter" type="ResellerTemplateDelInputType"/>
+			<xs:element name="disable-aps-filter" type="ResellerTemplateDelInputType"/>
+            <xs:element name="duplicate" type="ResellerTemplateDuplicateInputType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ResellerTemplateAddInputType">
+		<xs:sequence>
+			<xs:element name="name" type="string"/>
+			<xs:element name="limits" type="ResellerLimits" minOccurs="0"/>
+			<xs:element name="permissions" type="clientPerms" minOccurs="0"/>
+			<xs:element name="ip-pool" type="ResellerTemplateIpPoolType" minOccurs="0"/>
+			<xs:element name="external-id" type="string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResellerTemplateGetInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="ResellerTemplateFilterType"/>
+			<xs:element name="limits" type="NoneType" minOccurs="0"/>
+			<xs:element name="permissions" type="NoneType" minOccurs="0"/>
+			<xs:element name="ip-pool" type="NoneType" minOccurs="0"/>
+			<xs:element name="packages" type="NoneType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResellerTemplateDelInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="ResellerTemplateFilterType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResellerTemplateSetInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="ResellerTemplateFilterType"/>
+			<xs:element name="limits" type="ResellerLimits" minOccurs="0"/>
+			<xs:element name="permissions" type="clientPerms" minOccurs="0"/>
+			<xs:element name="ip-pool" type="ResellerTemplateIpPoolType" minOccurs="0"/>
+			<xs:element name="external-id" type="string" minOccurs="0"/>
+			<xs:element name="name" type="string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+    <xs:complexType name="ResellerTemplateDuplicateInputType">
+        <xs:sequence>
+            <xs:element name="name" type="string"/>
+            <xs:element name="duplicate-name" type="string"/>
+        </xs:sequence>
+    </xs:complexType>
+	<xs:complexType name="ResellerTemplateFilterType">
+		<xs:choice>
+			<xs:element name="id" type="id_type" maxOccurs="unbounded"/>
+			<xs:element name="name" type="string" maxOccurs="unbounded"/>
+			<xs:element name="all" type="NoneType"/>
+			<xs:element name="guid" type="string" maxOccurs="unbounded"/>
+			<xs:element name="external-id" type="string" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ResellerTemplateIpPoolType">
+		<xs:sequence>
+			<xs:element name="ip-address" type="ip_address" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="allocate-ip" type="int" minOccurs="0"/>
+			<xs:element name="allocate-ipv6" type="int" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResellerTemplateOutputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add" type="ResellerTemplateOutputAddType"/>
+			<xs:element name="get" type="ResellerTemplateOutputGetType"/>
+			<xs:element name="del" type="ResellerTemplateOutputDelType"/>
+			<xs:element name="set" type="ResellerTemplateOutputSetType"/>
+			<xs:element name="add-package">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="remove-package">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-limit-descriptor" type="ResellerDescriptorOutput"/>
+			<xs:element name="get-permission-descriptor" type="ResellerDescriptorOutput"/>
+            <xs:element name="enable-aps-filter">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="disable-aps-filter">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="duplicate" type="ResellerTemplateOutputAddType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ResellerTemplateOutputAddType">
+		<xs:sequence>
+			<xs:element name="result" type="ResellerTemplateOutputResulttype"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResellerTemplateOutputResulttype">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:sequence>
+					<xs:element name="id" type="id_type" minOccurs="0"/>
+					<xs:element name="name" type="string" minOccurs="0"/>
+					<xs:element name="guid" type="string" minOccurs="0"/>
+					<xs:element name="external-id" type="string" minOccurs="0"/>
+					<xs:element name="problems" type="string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ResellerTemplateOutputGetType">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="ResellerTemplateOutputResulttype">
+							<xs:sequence>
+								<xs:element name="limits" type="ResellerLimits" minOccurs="0"/>
+								<xs:element name="permissions" type="clientPerms" minOccurs="0"/>
+								<xs:element name="ip-pool" type="ResellerTemplateIpPoolType" minOccurs="0"/>
+								<xs:element name="aps-filter" type="boolean" minOccurs="0"/>
+								<xs:element name="packages" type="ResellerTemplateOutputApplicationPackagesType" minOccurs="0"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResellerTemplateOutputSetType">
+		<xs:sequence>
+			<xs:element name="result" type="ResellerTemplateOutputResulttype" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResellerTemplateOutputDelType">
+		<xs:sequence>
+			<xs:element name="result" type="ResellerTemplateOutputResulttype" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResellerTemplatePreferencesType">
+		<xs:sequence>
+			<xs:element name="sbnet-user" type="boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Create Sitebuilder user</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResellerPlanApplicationInput">
+		<xs:sequence>
+			<xs:element name="filter" type="ResellerTemplateFilterType">
+				<xs:annotation>
+					<xs:documentation>Filter objects to be updated</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="package" type="ApplicationInput" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResellerTemplateOutputApplicationPackagesType">
+		<xs:sequence>
+			<xs:element name="package" type="APSIdentifierType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

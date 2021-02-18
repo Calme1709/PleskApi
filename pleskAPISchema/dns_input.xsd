@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:include schemaLocation="plesk_dns.xsd"/>
+	<xs:complexType name="dnsSelectionFilterType">
+		<xs:annotation>
+			<xs:documentation>Fliter domains list</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="site-id" type="id_type" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Record ID ( ID in Plesk DB)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="id" type="id_type" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Record ID ( ID in Plesk DB)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="site-alias-id" type="id_type" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="dns-zone-name" type="string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+    <xs:complexType name="dnsIpSelectionFilterType">
+        <xs:annotation>
+            <xs:documentation>Filter zones list</xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:element name="used-ip" type="string" minOccurs="0" maxOccurs="1"/>
+        </xs:choice>
+    </xs:complexType>
+	<xs:complexType name="simpleFilterType">
+		<xs:choice>
+			<xs:element name="site-id" type="id_type" maxOccurs="unbounded"/>
+			<xs:element name="site-alias-id" type="id_type" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="aclFilter">
+		<xs:sequence>
+			<xs:element name="host" type="string" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="masterServerFilterType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="domain_id" type="id_type"/>
+				<xs:element name="domain_alias_id" type="id_type"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DNSInputType">
+		<xs:annotation>
+			<xs:documentation>DNS operator request</xs:documentation>
+		</xs:annotation>
+		<xs:choice maxOccurs="unbounded">
+            <xs:element name="sync-with-template">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="filter" type="dnsIpSelectionFilterType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+			<xs:element name="add_rec" type="dnsRecord"/>
+			<xs:element name="get_rec">
+				<xs:annotation>
+					<xs:documentation>Get domain(s) data from server</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="dnsSelectionFilterType">
+							<xs:annotation>
+								<xs:documentation>Filter domains to be refreshed</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:choice>
+							<xs:element name="template" minOccurs="0"/>
+							<xs:element name="include-subdomains" minOccurs="0"/>
+						</xs:choice>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="del_rec">
+				<xs:annotation>
+					<xs:documentation>Delete domain(s) from server</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="dnsSelectionFilterType">
+							<xs:annotation>
+								<xs:documentation>Fliter domains to be deleted</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="template" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get_acl"/>
+			<xs:element name="add_to_acl">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="aclFilter"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="remove_from_acl">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="aclFilter"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="set">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="simpleFilterType" minOccurs="0"/>
+						<xs:element name="soa" type="SOAType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="simpleFilterType" minOccurs="0"/>
+						<xs:element name="soa" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="switch">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="simpleFilterType"/>
+						<xs:element name="zone_type">
+							<xs:simpleType>
+								<xs:restriction base="string">
+									<xs:enumeration value="master"/>
+									<xs:enumeration value="slave"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="add_master_server">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:choice>
+							<xs:element name="site-id" type="id_type"/>
+							<xs:element name="site-alias-id" type="id_type"/>
+						</xs:choice>
+						<xs:element name="ip_address" type="ip_address"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get_master_server">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="dnsSelectionFilterType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="del_master_server">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="dnsSelectionFilterType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="enable">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="simpleFilterType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="disable">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="simpleFilterType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="enable-remote-dns" type="NoneType"/>
+			<xs:element name="disable-remote-dns" type="NoneType"/>
+			<xs:element name="get-status-remote-dns" type="NoneType"/>
+			<xs:element name="set-recursion" type="DNSSetRecursionInputType">
+				<xs:annotation>
+					<xs:documentation>Set dns recursion</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="get-recursion" type="NoneType">
+				<xs:annotation>
+					<xs:documentation>Get dns recursion value</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="get-supported-recursion" type="NoneType">
+				<xs:annotation>
+					<xs:documentation>Get supported dns recursion</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="DNSSetRecursionInputType">
+		<xs:annotation>
+			<xs:documentation>Set dns recursion</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="value" type="DNSRecursionValueType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

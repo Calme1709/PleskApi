@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_custom_button.xsd"/>
+	<xs:complexType name="customButtonFilter">
+		<xs:annotation>
+			<xs:documentation>Custom buttons IDs or owners</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="custombutton-id" type="id_type" maxOccurs="unbounded"/>
+			<xs:element name="owner" type="CBOwner" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="UIInputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="create-custombutton">
+				<xs:annotation>
+					<xs:documentation>Creation of simple custom button or custom button linked with site application.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:annotation>
+							<xs:documentation>Creation of simple custom button</xs:documentation>
+						</xs:annotation>
+						<xs:element name="owner" type="CBOwner"/>
+						<xs:element name="properties" type="CBProps"/>
+						<xs:element name="url-components" type="CBUrlComponents" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-custombutton">
+				<xs:annotation>
+					<xs:documentation>Retrieving information about custom button.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="customButtonFilter"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="delete-custombutton">
+				<xs:annotation>
+					<xs:documentation>Removal of specified custom buttons</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="customButtonFilter"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-navigation" type="NoneType"/>
+			<xs:element name="branding-theme-install">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="BrandingInputFilter"/>
+						<xs:element name="path" type="string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="branding-theme-uninstall">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="BrandingInputFilter"/>						
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>			
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="BrandingInputFilter">
+		<xs:sequence>
+			<xs:element name="vendor-login" type="string" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

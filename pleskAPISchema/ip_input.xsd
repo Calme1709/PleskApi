@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:include schemaLocation="plesk_common.xsd"/>
+	<xs:complexType name="ipFilterType">
+		<xs:annotation>
+			<xs:documentation>Fliter clients list</xs:documentation>
+		</xs:annotation>
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="ip_address" type="ip_address">
+				<xs:annotation>
+					<xs:documentation>IP address value</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+    <xs:complexType name="serviceNodeSpecType">
+								<xs:choice>
+									<xs:element name="id">
+										<xs:simpleType>
+											<xs:restriction base="string">
+												<xs:minLength value="1"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element name="external-id">
+										<xs:simpleType>
+											<xs:restriction base="string">
+												<xs:minLength value="1"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+								</xs:choice>
+							</xs:complexType>
+	<xs:complexType name="IpInputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add">
+				<xs:annotation>
+					<xs:documentation>Add IP to Plesk Server</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="ip_address" type="ip_address"/>
+						<xs:element name="netmask" type="ip_address"/>
+						<xs:element name="type" type="ipType"/>
+						<xs:element name="interface" type="netInterface"/>
+						<xs:element name="service-node" minOccurs="0" type="serviceNodeSpecType"/>
+                        <xs:element name="public_ip_address" type="ip_address" minOccurs="0"/>
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get">
+				<xs:annotation>
+					<xs:documentation>Get server IP(s)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="set">
+				<xs:annotation>
+					<xs:documentation>Setup IP address(s) type</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="ipFilterType">
+							<xs:annotation>
+								<xs:documentation>Fliter IPs to be deleted</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:choice>
+							<xs:element name="type" type="ipType">
+								<xs:annotation>
+									<xs:documentation>IP address type want to be set</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="certificate_name" type="xs:string"/>
+                            <xs:element name="public_ip_address" type="ip_address"/>
+                            <xs:element name="service-node" minOccurs="0" type="serviceNodeSpecType"/>
+                        </xs:choice>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="del">
+				<xs:annotation>
+					<xs:documentation>Remove IP from Plesk Server</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="filter" type="ipFilterType">
+							<xs:annotation>
+								<xs:documentation>Fliter IPs to be deleted</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+</xs:schema>

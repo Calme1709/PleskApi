@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:include schemaLocation="plesk_common.xsd"/>
+	<xs:include schemaLocation="event_log_types.xsd"/>
+	<xs:complexType name="EventLogResponseType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="get">
+				<xs:annotation>
+					<xs:documentation>Getting result</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="event" maxOccurs="unbounded">
+												<xs:complexType>
+													<xs:sequence>
+														<xs:element name="type" type="event_type">
+															<xs:annotation>
+																<xs:documentation>Event type</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+														<xs:element name="time" type="unsignedInt">
+															<xs:annotation>
+																<xs:documentation>Event time as GMT UNIX timestamp</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+														<xs:element name="class" type="class_type">
+															<xs:annotation>
+																<xs:documentation>Event object class</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+														<xs:element name="id">
+															<xs:annotation>
+																<xs:documentation>Event object ID</xs:documentation>
+															</xs:annotation>
+															<xs:simpleType>
+																<xs:restriction base="string"/>
+															</xs:simpleType>
+														</xs:element>
+													</xs:sequence>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get_events">
+				<xs:annotation>
+					<xs:documentation>Get event log from server up from given last know ID</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="event" maxOccurs="unbounded">
+												<xs:complexType>
+													<xs:sequence>
+														<xs:element name="id">
+															<xs:annotation>
+																<xs:documentation>Event object index ID</xs:documentation>
+															</xs:annotation>
+															<xs:simpleType>
+																<xs:restriction base="id_type"/>
+															</xs:simpleType>
+														</xs:element>
+														<xs:element name="type" type="event_type">
+															<xs:annotation>
+																<xs:documentation>Event type</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+														<xs:element name="time" type="unsignedInt">
+															<xs:annotation>
+																<xs:documentation>Event time as GMT UNIX timestamp</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+														<xs:element name="class" type="class_type">
+															<xs:annotation>
+																<xs:documentation>Event object class</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+														<xs:element name="obj_id" type="string">
+															<xs:annotation>
+																<xs:documentation>Event type object ID</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+														<xs:element name="user" type="string">
+															<xs:annotation>
+																<xs:documentation>Login user genereted event </xs:documentation>
+															</xs:annotation>
+														</xs:element>
+														<xs:element name="host" type="string">
+															<xs:annotation>
+																<xs:documentation>Host user genereted ivent</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+													</xs:sequence>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-last-id">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="id" type="id_type"/>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+</xs:schema>

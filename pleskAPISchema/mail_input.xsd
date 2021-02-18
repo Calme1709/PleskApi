@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:include schemaLocation="plesk_mailname.xsd"/>
+	<xs:complexType name="mailnameFilterType">
+		<xs:sequence>
+			<xs:element name="site-id" type="id_type"/>
+			<xs:element name="mailname" type="mailnameUpdateType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="mailnameFilterAddType">
+		<xs:sequence>
+			<xs:element name="site-id" type="id_type"/>
+			<xs:element name="mailname" type="mailnameAddType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="mailnameUpdateAddFilterType">
+		<xs:sequence>
+			<xs:element name="site-id" type="id_type"/>
+			<xs:element name="mailname" type="mailnameUpdateAddType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="mailFilterType">
+		<xs:sequence>
+			<xs:element name="site-id" type="id_type"/>
+			<xs:element name="name" type="string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MailTypeRequest">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="create">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="mailnameFilterAddType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="update">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="add">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="filter" type="mailnameUpdateAddFilterType"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="remove">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="filter" type="mailnameUpdateAddFilterType"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="set">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="filter" type="mailnameFilterType"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get_info">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="GetInfoAdvancedFilter"/>
+						<xs:sequence>
+							<xs:element name="mailbox" type="NoneType" minOccurs="0"/>
+							<xs:element name="mailbox-usage" type="NoneType" minOccurs="0"/>
+							<xs:element name="forwarding" type="NoneType" minOccurs="0"/>
+							<xs:element name="aliases" type="NoneType" minOccurs="0"/>
+							<xs:element name="autoresponder" type="NoneType" minOccurs="0"/>
+						</xs:sequence>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="remove">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="mailFilterType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="enable">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="site-id" type="id_type"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="disable">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="site-id" type="id_type"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="set_prefs">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="site-id" type="id_type" minOccurs="0" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="prefs" type="MailPreferences"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get_prefs">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="site-id" type="id_type" minOccurs="0" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="rename">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="site-id" type="id_type"/>
+						<xs:element name="name" type="string"/>
+						<xs:element name="new-name" type="string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+            <xs:element name="get-available-mail-providers"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="GetInfoAdvancedFilter">
+		<xs:complexContent>
+			<xs:extension base="mailFilterType"/>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

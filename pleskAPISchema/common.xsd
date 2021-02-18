@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:complexType name="resultType">
+		<xs:annotation>
+			<xs:documentation>Operation result</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="status" type="result_status">
+				<xs:annotation>
+					<xs:documentation>Result status (ok/error)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="errcode" type="unsignedInt" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Error code if error occurred</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="errtext" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Error message if error occurred</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+    <xs:complexType name="LicInstallResultType">
+        <xs:complexContent>
+            <xs:extension base="resultType">
+                <xs:sequence minOccurs="0">
+                    <xs:element name="key-id" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+	<xs:simpleType name="id_type">
+		<xs:annotation>
+			<xs:documentation>Item ID</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:positiveInteger">
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="result_status">
+		<xs:annotation>
+			<xs:documentation>Result status</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ok"/>
+			<xs:enumeration value="error"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="boolean">
+		<xs:restriction base="xs:boolean">
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="int">
+		<xs:restriction base="xs:integer">
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="unsignedInt">
+		<xs:restriction base="xs:unsignedInt">
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="short">
+		<xs:restriction base="xs:short">
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="unsignedShort">
+		<xs:restriction base="xs:unsignedShort">
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="long">
+		<xs:restriction base="xs:long">
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="unsignedLong">
+		<xs:restriction base="xs:unsignedLong">
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="size">
+		<xs:restriction base="xs:unsignedLong">
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="double">
+		<xs:restriction base="xs:double">
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="date">
+		<xs:restriction base="xs:date">
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="datetime">
+		<xs:restriction base="xs:dateTime">
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="string">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="text">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="preserve"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="base64">
+		<xs:restriction base="xs:base64Binary">
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ip_address">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>			
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="passwdType">
+		<xs:annotation>
+			<xs:documentation>Typical password</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="string">
+			<xs:enumeration value="plain"/>
+			<xs:enumeration value="crypt"/>
+			<xs:enumeration value="sym"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="emailType">
+		<xs:annotation>
+			<xs:documentation>Any email address</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="string">
+			<xs:minLength value="3"/>
+			<xs:maxLength value="255"/>
+			<xs:pattern value="[\-\+\p{L}\p{N}\._]*@([\p{L}\p{N}][\-\p{L}\p{N}]*\.)*[\p{L}\p{N}][\-\p{L}\p{N}]*\.?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="urlType">
+		<xs:annotation>
+			<xs:documentation>URL</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="string">
+			<xs:maxLength value="255"/>
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="zipcodeType">
+		<xs:restriction base="string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="NoneType"/>
+	<xs:complexType name="resultFilterType">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:sequence minOccurs="0">
+					<xs:element name="filter-id" type="string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>This node is used for binding operation resull with input value that specified in filter. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="id" type="id_type" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Object ID</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

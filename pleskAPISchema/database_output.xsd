@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_db.xsd"/>
+	<xs:complexType name="DatabaseServerResultType">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:sequence minOccurs="0">
+					<xs:element name="id" type="id_type"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DatabaseServerResultType2">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:sequence>
+					<xs:element name="type" type="string" minOccurs="0"/>
+					<xs:element name="id" type="id_type" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DatabaseServerResponseType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="DatabaseServerResultType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="set">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="DatabaseServerResultType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="del">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="DatabaseServerResultType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="set-default">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="DatabaseServerResultType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="DatabaseServerResultType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="data">
+												<xs:complexType>
+													<xs:complexContent>
+														<xs:extension base="DatabaseServerDescription">
+															<xs:sequence>
+																<xs:element name="status" type="DatabaseServerError"/>
+																<xs:element name="db_num" type="int"/>
+																<xs:element name="default" minOccurs="0"/>
+																<xs:element name="local" minOccurs="0"/>
+															</xs:sequence>
+														</xs:extension>
+													</xs:complexContent>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-supported-types">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultType">
+										<xs:sequence minOccurs="0" maxOccurs="unbounded">
+											<xs:element name="type" type="string"/>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-default">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="DatabaseServerResultType2" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-local">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="DatabaseServerResultType2" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="DatabaseOutputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add-db" type="DatabaseAddDBOutputType"/>
+			<xs:element name="del-db" type="DatabaseDelDBOutputType"/>
+            <xs:element name="assign-to-subscription" type="DatabaseAssignToSubscriptionOutputType"/>
+			<xs:element name="set-default-user" type="DatabaseSetDBOutputType"/>
+			<xs:element name="get-default-user" type="DatabaseGetDefaultUserOutputType"/>
+			<xs:element name="get-db" type="DatabaseGetDBOutputType"/>
+			<xs:element name="add-db-user" type="DatabaseAddDBUserOutputType"/>
+			<xs:element name="del-db-user" type="DatabaseDelDBUserOutputType"/>
+			<xs:element name="get-db-users" type="DatabaseGetDBUsersOutputType"/>
+			<xs:element name="set-db-user" type="DatabaseSetDBUserOutputtype"/>
+			<xs:element name="set-custom-host" type="DatabaseSetCustomHostOutputType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="DatabaseAddDBOutputType">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="id" type="id_type"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DatabaseDelDBOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+    <xs:complexType name="DatabaseAssignToSubscriptionOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DatabaseGetDBOutputType">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultFilterType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="name" type="string"/>
+								<xs:element name="type" type="string"/>
+								<xs:element name="webspace-id" type="id_type"/>
+								<xs:element name="db-server-id" type="id_type"/>
+								<xs:element name="default-user-id" type="int" minOccurs="0"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DatabaseAddDBUserOutputType">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="id" type="id_type"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DatabaseDelDBUserOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DatabaseGetDBUsersOutputType">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultFilterType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="login" minOccurs="0"/>
+								<xs:element name="db-id" type="id_type" minOccurs="0"/>
+								<xs:element name="acl" type="DatabaseUserAclType" minOccurs="0"/>
+								<xs:element name="allow-access-from" type="DatabaseUserRemoteAccessRulesType" minOccurs="0"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DatabaseSetDBUserOutputtype">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="id" type="id_type"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DatabaseSetDBOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DatabaseGetDefaultUserOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DatabaseSetCustomHostOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

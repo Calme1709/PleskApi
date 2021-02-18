@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_common.xsd"/>
+	<xs:complexType name="APSInputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="download-package" type="APSPackageDownloadInputType"/>
+			<xs:element name="get-download-status" type="APSPackageDownloadStatusInputType"/>
+			<xs:element name="import-package" type="APSPackageImportInputType"/>
+			<xs:element name="get-packages-list" type="APSPackagesListInputType"/>
+			<xs:element name="install" type="APSInstallInputType"/>
+			<xs:element name="import-config" type="APSImportConfigInputType"/>
+			<xs:element name="set-package-properties" type="APSSetPackagesPropertiesInputType"/>
+			<xs:element name="get-packages-list-by-reseller" type="APSGetPackagesByResellerInput"/>
+			<xs:element name="get-packages-list-by-webspace" type="APSGetPackagesByWSInput"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="APSOutputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="download-package" type="APSPackageDownloadOutputType"/>
+			<xs:element name="get-download-status" type="APSPackageDownloadStatusOutputType"/>
+			<xs:element name="import-package" type="APSPackageImportOutputType"/>
+			<xs:element name="get-packages-list" type="APSPackagesListOutputType"/>
+			<xs:element name="install" type="APSInstallOutputType"/>
+			<xs:element name="import-config" type="APSImportConfigOutputType"/>
+			<xs:element name="set-package-properties" type="APSSetPackagesPropertiesOutputType"/>
+			<xs:element name="get-packages-list-by-reseller" type="APSGetPackagesByResellerOutput"/>
+			<xs:element name="get-packages-list-by-webspace" type="APSGetPackagesByWSOutput"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="APSPackageDownloadInputType">
+		<xs:sequence>
+			<xs:element name="package" type="APSIdentifierType"/>
+			<xs:element name="aps-catalog-url" type="string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSPackageDownloadOutputType">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="task-id" type="id_type"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSPackageDownloadStatusInputType">
+		<xs:sequence>
+			<xs:element name="filter">
+				<xs:annotation>
+					<xs:documentation>Filter tasks to be retrieved</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence minOccurs="0">
+						<xs:element name="task-id" type="id_type" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSPackageDownloadStatusOutputType">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultFilterType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="task">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="id" type="id_type"/>
+											<xs:choice>
+												<xs:element name="finished">
+													<xs:complexType>
+														<xs:choice>
+															<xs:element name="error"/>
+															<xs:element name="package-id" type="id_type"/>
+														</xs:choice>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="in-progress" type="APSPackageDownloadStatusInProgress"/>
+											</xs:choice>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSPackageDownloadStatusInProgress">
+		<xs:sequence>
+			<xs:element name="total" type="xs:integer"/>
+			<xs:element name="completed" type="xs:integer"/>
+			<xs:element name="current" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSPackageImportInputType">
+		<xs:sequence>
+			<xs:element name="filename" type="string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSPackageImportOutputType">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="package-id" type="id_type"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSPackagesListInputType">
+		<xs:choice>
+			<xs:element name="filter">
+				<xs:annotation>
+					<xs:documentation>Filter packages to be retrieved</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence minOccurs="0">
+						<xs:element name="package-id" type="id_type" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="all">
+				<xs:annotation>
+					<xs:documentation>Retrieve packages list from APS catalog and installed on server</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="APSPackagesListOutputType">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultFilterType">
+							<xs:sequence minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="package">
+									<xs:complexType>
+										<xs:complexContent>
+											<xs:extension base="APSIdentifierType">
+												<xs:sequence>
+													<xs:element name="id" type="id_type" minOccurs="0"/>
+												</xs:sequence>
+											</xs:extension>
+										</xs:complexContent>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSInstallInputType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="domain-id" type="id_type">
+					<xs:annotation>
+						<xs:documentation>Domain ID (ID in Plesk DB)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="domain-name" type="string">
+					<xs:annotation>
+						<xs:documentation>Domain name (UTF-8)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="subdomain-id" type="id_type">
+					<xs:annotation>
+						<xs:documentation>Subdomain ID (ID in Plesk DB)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="subdomain-name" type="string">
+					<xs:annotation>
+						<xs:documentation>Subdomain name (UTF-8)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:choice>
+				<xs:element name="package-id" type="id_type"/>
+				<xs:element name="package" type="APSIdentifierType"/>
+			</xs:choice>
+			<xs:element name="ssl" type="boolean" minOccurs="0"/>
+			<xs:element name="url-prefix" type="APSUrlPrefixType" minOccurs="0"/>
+			<xs:element name="database" type="APSDatabaseInputType" minOccurs="0"/>
+			<xs:element name="settings" type="APSSettingsInputType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSDatabaseInputType">
+		<xs:sequence>
+			<xs:element name="name">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:whiteSpace value="collapse"/>
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="login">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:whiteSpace value="collapse"/>
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="password" type="string"/>
+			<xs:element name="prefix" type="xs:string" minOccurs="0"/>
+			<xs:element name="server" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSSettingsInputType">
+		<xs:sequence>
+			<xs:element name="setting" type="APSSettingInputType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSSettingInputType">
+		<xs:sequence>
+			<xs:element name="name" type="string"/>
+			<xs:sequence>
+				<xs:element name="value" type="string" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="APSUrlPrefixType">
+		<xs:restriction base="string">
+			<xs:annotation>
+				<xs:documentation>The root URL (/) is used by default</xs:documentation>
+			</xs:annotation>
+			<xs:maxLength value="255"/>
+			<xs:minLength value="1"/>
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="APSInstallOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSImportConfigInputType">
+		<xs:sequence>
+			<xs:element name="filename" type="string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSImportConfigOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSSetPackagesPropertiesInputType">
+		<xs:sequence>
+			<xs:element name="filter">
+				<xs:annotation>
+					<xs:documentation>Filter packages to be updated</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence minOccurs="0">
+						<xs:element name="package-id" type="id_type" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="properties">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="visible" type="boolean"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSSetPackagesPropertiesOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSGetPackagesByResellerInput">
+		<xs:sequence>
+			<xs:element name="reseller-id" type="id_type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSGetPackagesByWSInput">
+		<xs:sequence>
+			<xs:element name="webspace-id" type="id_type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSGetPackagesByResellerOutput">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence>
+								<xs:element name="package" type="APSIdentifierType" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="APSGetPackagesByWSOutput">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="package" type="APSIdentifierType" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

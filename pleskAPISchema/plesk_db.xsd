@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_common.xsd"/>
+	<xs:include schemaLocation="common.xsd"/>
+	<xs:complexType name="DatabaseServer">
+		<xs:sequence>
+			<xs:element name="host" type="string" minOccurs="0"/>
+			<xs:element name="port" type="int" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DatabaseServerDescription">
+		<xs:complexContent>
+			<xs:extension base="DatabaseServer">
+				<xs:sequence>
+					<xs:element name="type" type="string"/>
+					<xs:element name="admin" type="string"/>
+					<xs:element name="password" type="string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DatabaseServerDescriptionOpt">
+		<xs:complexContent>
+			<xs:extension base="DatabaseServer">
+				<xs:sequence>
+					<xs:element name="admin" type="string" minOccurs="0"/>
+					<xs:element name="password" type="string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="DatabaseServerError">
+		<xs:restriction base="string">
+			<xs:enumeration value="NO_ERROR"/>
+			<xs:enumeration value="CONNECTION_FAILED"/>
+			<xs:enumeration value="LOGIN_FAILED"/>
+			<xs:enumeration value="PERMISSION_DENIED"/>
+			<xs:enumeration value="OTHER_ERROR"/>
+			<xs:enumeration value="CREDENTIALS_NOT_SET"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="DatabaseServerAddParam">
+		<xs:sequence>
+			<xs:element name="host" type="string"/>
+			<xs:element name="port" type="string"/>
+			<xs:element name="type" type="string"/>
+			<xs:element name="admin" type="string"/>
+			<xs:element name="password" type="string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DatabaseUserAclType">
+		<xs:sequence>
+			<xs:element name="host" type="string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DatabaseUserRemoteAccessRulesType">
+		<xs:sequence>
+			<xs:element name="ip-address" type="string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

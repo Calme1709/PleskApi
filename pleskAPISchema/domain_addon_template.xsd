@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_domain.xsd"/>
+	<xs:include schemaLocation="plesk_mailname.xsd"/>
+	<xs:include schemaLocation="plesk_dns.xsd"/>
+	<xs:complexType name="DomainAddonTemplateInputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add" type="DomainAddonTemplateAddInputType"/>
+			<xs:element name="get" type="DomainAddonTemplateGetInputType"/>
+			<xs:element name="del" type="DomainAddonTemplateDeleteInputType"/>
+			<xs:element name="set" type="DomainAddonTemplateSetInputType"/>
+			<xs:element name="add-package" type="ServicePlanAddonApplicationInput"/>
+			<xs:element name="remove-package" type="ServicePlanAddonApplicationInput"/>
+			<xs:element name="get-limit-descriptor" type="DomainAddonTemplateGetInputType"/>
+			<xs:element name="get-permission-descriptor" type="DomainAddonTemplateGetInputType"/>
+			<xs:element name="get-physical-hosting-descriptor" type="DomainAddonTemplateGetInputType"/>
+            <xs:element name="duplicate" type="DomainAddonTemplateDuplicateInputType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="DomainAddonTemplateAddInputType">
+		<xs:sequence>
+			<xs:element name="name" type="string">
+				<xs:annotation>
+					<xs:documentation>Template name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice minOccurs="0">
+				<xs:element name="owner-id" type="id_type"/>
+				<xs:element name="owner-login" type="string"/>
+			</xs:choice>
+			<xs:element name="limits" type="DomainAddonTemplateLimits" minOccurs="0"/>
+			<xs:element name="hosting" type="DomainAddonTemplateVrtHst" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Physical hosting</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="performance" type="DomainPerformanceType" minOccurs="0"/>
+			<xs:element name="permissions" type="domainPerms" minOccurs="0"/>
+			<xs:element name="external-id" type="string" minOccurs="0"/>
+			<xs:element name="php-settings" type="phpSettings" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DomainAddonTemplateFilterType">
+		<xs:choice minOccurs="0">
+			<xs:element name="name" type="string" maxOccurs="unbounded"/>
+			<xs:element name="id" type="id_type" maxOccurs="unbounded"/>
+			<xs:element name="guid" type="string" maxOccurs="unbounded"/>
+			<xs:element name="external-id" type="string" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="DomainAddonTemplateGetInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="DomainAddonTemplateFilterType"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="owner-id" type="id_type"/>
+				<xs:element name="owner-login" type="string"/>
+				<xs:element name="owner-all" type="NoneType"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DomainAddonTemplateDeleteInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="DomainAddonTemplateFilterType"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="owner-id" type="id_type"/>
+				<xs:element name="owner-login" type="string"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DomainAddonTemplateSetInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="DomainAddonTemplateFilterType"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="owner-id" type="id_type"/>
+				<xs:element name="owner-login" type="string"/>
+			</xs:choice>
+			<xs:sequence>
+				<xs:element name="limits" type="DomainAddonTemplateLimits" minOccurs="0"/>
+				<xs:element name="hosting" type="DomainAddonTemplateVrtHst" minOccurs="0"/>
+				<xs:element name="performance" type="DomainPerformanceType" minOccurs="0"/>
+				<xs:element name="permissions" type="domainPerms" minOccurs="0"/>
+				<xs:element name="external-id" type="string" minOccurs="0"/>
+				<xs:element name="name" type="string" minOccurs="0"/>
+				<xs:element name="php-settings" type="phpSettings" minOccurs="0"/>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+    <xs:complexType name="DomainAddonTemplateDuplicateInputType">
+        <xs:sequence>
+            <xs:element name="filter" type="DomainAddonTemplateFilterType"/>
+            <xs:choice minOccurs="0">
+                <xs:element name="owner-id" type="id_type"/>
+                <xs:element name="owner-login" type="string"/>
+            </xs:choice>
+            <xs:element name="duplicate-name" type="string"/>
+        </xs:sequence>
+    </xs:complexType>
+	<xs:complexType name="DomainAddonTemplateOutputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add" type="DomainAddonTemplateAddOutputType"/>
+			<xs:element name="get" type="DomainAddonTemplateGetOutputType"/>
+			<xs:element name="del" type="DomainAddonTemplateDeleteOutputType"/>
+			<xs:element name="set" type="DomainAddonTemplateSetOutputType"/>
+			<xs:element name="add-package">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="remove-package">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="enable-aps-filter">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="disable-aps-filter">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-limit-descriptor">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="DomainAddonTemplateDescriptorOutput" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-permission-descriptor">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="DomainAddonTemplateDescriptorOutput" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-physical-hosting-descriptor">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="DomainAddonTemplateDescriptorOutput" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+            <xs:element name="duplicate" type="DomainAddonTemplateAddOutputType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="DomainAddonTemplateAddOutputType">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="id" type="id_type"/>
+								<xs:element name="guid" type="string"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DomainAddonTemplateGetOutputType">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="id" type="id_type" minOccurs="0"/>
+								<xs:element name="name" type="string" minOccurs="0"/>
+								<xs:element name="guid" type="string" minOccurs="0"/>
+								<xs:element name="external-id" type="string" minOccurs="0"/>
+								<xs:element name="owner-id" type="id_type" minOccurs="0"/>
+								<xs:element name="owner-login" type="string" minOccurs="0"/>
+								<xs:sequence>
+									<xs:element name="limits" type="DomainAddonTemplateLimits" minOccurs="0"/>
+									<xs:element name="hosting" minOccurs="0">
+										<xs:complexType>
+											<xs:choice>
+												<xs:element name="vrt_hst" type="DomainAddonTemplateVrtHst"/>
+												<xs:element name="none" type="NoneType"/>
+											</xs:choice>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="performance" type="DomainPerformanceType" minOccurs="0"/>
+									<xs:element name="packages" minOccurs="0">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="package" type="APSIdentifierType" minOccurs="0" maxOccurs="unbounded"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="permissions" type="domainPerms" minOccurs="0"/>
+									<xs:element name="php-settings" type="phpSettings" minOccurs="0"/>
+								</xs:sequence>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DomainAddonTemplatePHosting">
+		<xs:choice>
+			<xs:element name="vrt_hst" type="DomainAddonTemplateVrtHst"/>
+			<xs:element name="none" type="NoneType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="DomainAddonTemplateDeleteOutputType">
+		<xs:complexContent>
+			<xs:extension base="DomainAddonTemplateResultType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DomainAddonTemplateResultType">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:choice minOccurs="0">
+								<xs:element name="id" type="id_type"/>
+								<xs:element name="name" type="string"/>
+								<xs:element name="guid" type="string"/>
+								<xs:element name="external-id" type="string"/>
+							</xs:choice>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DomainAddonTemplateSetOutputType">
+		<xs:complexContent>
+			<xs:extension base="DomainAddonTemplateResultType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DomainAddonTemplateVrtHst">
+		<xs:sequence>
+			<xs:element name="property" type="PleskPhysHostingPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DomainAddonTemplateMailPreferences">
+		<xs:sequence>
+			<xs:element name="webmail" type="string" minOccurs="0"/>
+			<xs:element name="spam-protect-sign" type="boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ServicePlanAddonApplicationInput">
+		<xs:sequence>
+			<xs:element name="filter" type="DomainAddonTemplateFilterType"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="owner-id" type="id_type"/>
+				<xs:element name="owner-login" type="string"/>
+			</xs:choice>
+			<xs:element name="package" type="ApplicationInput" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ServicePlanAddonApsFilterInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="DomainAddonTemplateFilterType">
+				<xs:annotation>
+					<xs:documentation>Filter objects to be updated</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice minOccurs="0">
+				<xs:element name="owner-id" type="id_type"/>
+				<xs:element name="owner-login" type="string"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DomainAddonTemplateLimits">
+		<xs:annotation>
+			<xs:documentation>Domain limits</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="limit" type="PleskLimitType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DomainAddonTemplateDescriptorOutput">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:sequence>
+					<xs:choice minOccurs="0">
+						<xs:element name="id" type="id_type"/>
+						<xs:element name="name" type="string"/>
+						<xs:element name="guid" type="string"/>
+						<xs:element name="external-id" type="string"/>
+					</xs:choice>
+					<xs:element name="descriptor" type="ObjectDescriptor" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

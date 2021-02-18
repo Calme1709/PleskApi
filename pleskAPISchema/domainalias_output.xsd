@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_common.xsd"/>
+	<xs:include schemaLocation="plesk_domainalias.xsd"/>
+	<xs:complexType name="aliasResultType">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:choice minOccurs="0">
+					<xs:element name="id" type="id_type">
+						<xs:annotation>
+							<xs:documentation>Alias identifier</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:choice>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DomainAliasResponseType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="create">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="aliasResultType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="rename">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="resultType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultFilterType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="info" type="aliasInfoType"/>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="delete">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="set">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-supported-services" type="DAGetSupportedServicesOutputType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="DAGetSupportedServicesOutputType">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="service" type="string" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

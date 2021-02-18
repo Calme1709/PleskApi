@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:include schemaLocation="plesk_server.xsd"/>
+	<xs:complexType name="getType">
+		<xs:annotation>
+			<xs:documentation>Request server info</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0">
+			<xs:element name="key" type="GetKeyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Plesk licence key information</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="gen_info" type="NoneType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Server general information</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="components" type="NoneType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Server components</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stat" type="NoneType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Server statistics</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="admin" type="NoneType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Server administrator information</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="interfaces" type="NoneType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Server Network Interfaces List</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="services_state" type="NoneType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Server Services State</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="prefs" type="NoneType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Server Preferences</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="shells" type="NoneType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Server shells</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="session_setup" type="NoneType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Set up server session timeout</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="site-isolation-config" type="NoneType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Return configuration of site isolation mode</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="updates" type="NoneType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Return information about available and installed updates</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+            <xs:element name="admin-domain-list" type="NoneType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Domain list of admin</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="certificates" type="NoneType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>List of server certificates</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+		</xs:sequence>
+	</xs:complexType>
+    <xs:complexType name="GetKeyType">
+        <xs:sequence>
+            <xs:element name="filter" type="GetKeyFilter" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="GetKeyFilter">
+        <xs:choice minOccurs="1">
+            <xs:element name="key-id" type="xs:string" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>Returns only keys with specified ids</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>Returns only keys with specified names</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="all" type="NoneType">
+                <xs:annotation>
+                    <xs:documentation>Returns all keys</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="main" type="NoneType">
+                <xs:annotation>
+                    <xs:documentation>Returns main key (the same behavior as it is without filter specification)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="all-additional" type="NoneType">
+                <xs:annotation>
+                    <xs:documentation>Returns additional keys</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+	<xs:complexType name="ServerOperatorType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="get_protos" type="GetProtosType">
+				<xs:annotation>
+					<xs:documentation>Get supported PA protocols</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="get" type="getType">
+				<xs:annotation>
+					<xs:documentation>Get operation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="set" type="AdminSetType">
+				<xs:annotation>
+					<xs:documentation>Set operation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="srv_man" type="ServicesManagementType">
+				<xs:annotation>
+					<xs:documentation>Services management</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="lic_install" type="LicenseInstallType"/>
+            <xs:element name="lic_update" type="LicenseUpdateType"/>
+            <xs:element name="initial_setup" type="initialSetupType"/>
+			<xs:element name="get_additional_key" type="GetAdditionalKeyType"/>
+            <xs:element name="remove_additional_key" type="RemoveAdditionalKeyType"/>
+            <xs:element name="renew_additional_key" type="RenewAdditionalKeyType"/>
+            <xs:element name="set_misc" type="SetMiscType"/>
+			<xs:element name="get_misc" type="GetMiscType"/>
+			<xs:element name="create_session" type="CreateSessionType"/>
+			<xs:element name="del_misc" type="DelMiscType"/>
+			<xs:element name="set-ppb-connection"/>
+			<xs:element name="reboot"/>
+			<xs:element name="license-rollback-key"/>
+			<xs:element name="license-retrieve-keys"/>
+            <xs:element name="lic_get_info" type="LicenseGetInfoType"/>
+			<xs:element name="clean-mail-queue"/>
+            <xs:element name="add-admin-alias" type="AdminAliasAddType"/>
+            <xs:element name="set-admin-alias" type="AdminAliasSetType"/>
+            <xs:element name="del-admin-alias" type="AdminAliasDelType"/>
+            <xs:element name="domain-restriction-add" type="DomainRestrictionAddType"/>
+            <xs:element name="domain-restriction-remove" type="DomainRestrictionRemoveType"/>
+            <xs:element name="domain-restriction-list" type="DomainRestrictionListType"/>
+            <xs:element name="domain-restriction-rename" type="DomainRestrictionRenameType"/>
+            <xs:element name="domain-restriction-enable" type="DomainRestrictionEnableType"/>
+            <xs:element name="domain-restriction-disable" type="DomainRestrictionDisableType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="GetProtosType"/>
+	<xs:complexType name="AdminSetType">
+		<xs:all>
+			<xs:element name="admin" type="adminType" minOccurs="0"/>
+			<xs:element name="password" type="serverPassword" minOccurs="0"/>
+			<xs:element name="prefs" type="serverPrefs" minOccurs="0"/>
+			<xs:element name="session_setup" type="serverSessionSetup" minOccurs="0"/>
+			<xs:element name="external-id" type="string" minOccurs="0"/>
+			<xs:element name="mode" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="string">
+						<xs:enumeration value="poweruser"/>
+						<xs:enumeration value="standard"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="certificates" type="serverCertificates" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="ServicesManagementType">
+		<xs:sequence>
+			<xs:element name="id" type="srvIdType">
+				<xs:annotation>
+					<xs:documentation>Service ID</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="operation" type="srvOpType">
+				<xs:annotation>
+					<xs:documentation>Operation to be completed for service</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LicenseInstallType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="license" type="base64">
+					<xs:annotation>
+						<xs:documentation>License file. For *nix it is a self-extractor shell script</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="activation-code" type="string">
+					<xs:annotation>
+						<xs:documentation>Install license by activation code</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="additional_key" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>if this tag is present licence key is additional</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+            <xs:element name="instance-id" type="string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+    <xs:complexType name="LicenseUpdateType">
+        <xs:sequence>
+            <xs:element name="filter" type="LicenseUpdateFilter"/>
+            <xs:element name="instance-id" type="string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="LicenseGetInfoType">
+        <xs:sequence>
+            <xs:element name="license" type="base64">
+                <xs:annotation>
+                    <xs:documentation>License file.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="LicenseUpdateFilter">
+        <xs:sequence>
+            <xs:element name="key-id" type="string"/>
+        </xs:sequence>
+    </xs:complexType>
+	<xs:complexType name="GetAdditionalKeyType">
+		<xs:sequence>
+			<xs:element name="filter" type="GetAdditionalKeysFilter" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+    <xs:complexType name="RemoveAdditionalKeyType">
+        <xs:sequence>
+            <xs:element name="filter" type="GetAdditionalKeysFilter" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RenewAdditionalKeyType">
+        <xs:sequence>
+            <xs:element name="filter" type="GetAdditionalKeysFilter" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+	<xs:complexType name="SetMiscType">
+		<xs:sequence>
+			<xs:element name="filter" type="SetMiscFilter"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetMiscType">
+		<xs:sequence>
+			<xs:element name="filter" type="GetMiscFilter"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EnableAeType">
+		<xs:sequence>
+			<xs:element name="params" type="aeParamsType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DisableAeType"/>
+	<xs:complexType name="GetAeParametersType"/>
+	<xs:complexType name="CreateSessionType">
+		<xs:sequence>
+			<xs:element name="login" type="xs:string"/>
+			<xs:element name="data" type="SessionData" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Container for data transferred to session. All the data should be base64-encoded.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DelMiscType">
+		<xs:sequence>
+			<xs:element name="filter" type="DelMiscFilter"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetAdditionalKeysFilter">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SetMiscFilter">
+		<xs:sequence>
+			<xs:element name="property" type="SetMiscFilterProperty" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetMiscFilter">
+		<xs:sequence>
+			<xs:element name="property" type="GetMiscFilterProperty" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SessionData">
+		<xs:sequence>
+			<xs:element name="user_ip" type="string">
+				<xs:annotation>
+					<xs:documentation>IP address of user for which the session should be opened.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="c_email" type="string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Client Email. If client has no email specified, this value will be set and saved. If client has no email set and this value is empty, then client will be forced to enter this data first, instead of simple opening the URL required (see "starting_url" parameter).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="c_phone" type="string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Client Phone. If client has no phonel specified, this value will be set and saved. If client has no email set and this value is empty, then client will be forced to enter this data first, instead of simple opening the URL required (see "starting_url" parameter).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="starting_url" type="string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The URL from which the user will start browsing GUI. If not specified the user will start browsing from default starting URL.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="source_server" type="string">
+				<xs:annotation>
+					<xs:documentation>The URL of server from which the user comes. Required for returing user back to native Plesk.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="navigation" type="string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Navigation bar object. It will replace Plesk native navigation object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="pathbar" type="string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Pathbar object. It will replace Plesk native pathbar object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="logo_img_url" type="string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>URL of image to use in top logo.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="logo_img_ref" type="string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>URL to which top logo refers.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="locale_id" type="string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Identifier of locale to use (en-US, for example). If it is not installed - then default locale is used for session.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="skin" type="string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Name of skin to use. If it is not installed, then default skin is used.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="domain_name" type="string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Name of domain to which we are going to get access.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="disable_lock_screen" type="string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Flag for enabling/disabling Plesk screen locking. Valid values are: "true" or "false". If some value specified, then it will override default settings for this user.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="max_button_length" type="string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Literal representation of max button label length, If some value is set, then it will override default settings for this user.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="back_url" type="string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DelMiscFilter">
+		<xs:sequence>
+			<xs:element name="property" type="DelMiscFilterProperty" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SetMiscFilterProperty">
+		<xs:sequence>
+			<xs:element name="name" type="string"/>
+			<xs:element name="value" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetMiscFilterProperty">
+		<xs:sequence>
+			<xs:element name="name" type="miscPropertyNameType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DelMiscFilterProperty">
+		<xs:sequence>
+			<xs:element name="name" type="miscPropertyNameType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ValidationModeType">
+		<xs:choice>
+			<xs:element name="enabled" type="NoneType"/>
+			<xs:element name="disabled" type="NoneType"/>
+		</xs:choice>
+	</xs:complexType>
+</xs:schema>

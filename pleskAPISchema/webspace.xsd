@@ -1,0 +1,824 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:include schemaLocation="plesk_domain.xsd"/>
+    <xs:include schemaLocation="plesk_mailname.xsd"/>
+	<xs:complexType name="domainFilterType">
+		<xs:annotation>
+			<xs:documentation>Fliter domains list</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="id" type="id_type" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>ID ( ID in Plesk DB)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="owner-id" type="int" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Owner's ID </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="name" type="string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>name (UTF-8)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="owner-login" type="string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Owner's login.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="guid" type="string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>GUID</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="owner-guid" type="string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Owners GUID</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="external-id" type="string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="owner-external-id" type="string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="DomainTypeRequest">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="gen_setup">
+							<xs:complexType>
+								<xs:choice maxOccurs="10">
+									<xs:element name="name" type="domainName"/>
+									<xs:choice minOccurs="0">
+										<xs:element name="owner-id" type="int" minOccurs="0"/>
+										<xs:element name="owner-login" type="string" minOccurs="0"/>
+										<xs:element name="owner-guid" type="string" minOccurs="0"/>
+										<xs:element name="owner-external-id" type="string" minOccurs="0"/>
+									</xs:choice>
+									<xs:element name="htype" type="domainHType" minOccurs="0"/>
+									<xs:element name="ip_address" type="ip_address" minOccurs="0"/>
+									<xs:element name="status" type="string" minOccurs="0"/>
+									<xs:element name="external-id" type="string" minOccurs="0"/>
+                                    <xs:element name="description" type="string" minOccurs="0"/>
+                                    <xs:element name="admin-description" type="string" minOccurs="0"/>
+                                    <xs:element name="reseller-description" type="string" minOccurs="0"/>
+								</xs:choice>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="hosting" type="domainHostingAgentSet" minOccurs="0"/>
+						<xs:element name="limits" type="domainLimits" minOccurs="0"/>
+						<xs:element name="prefs" type="domainPrefs" minOccurs="0"/>
+						<xs:element name="performance" type="DomainPerformanceType" minOccurs="0"/>
+						<xs:element name="permissions" type="domainPerms" minOccurs="0"/>
+						<xs:element name="php-settings" type="phpSettings" minOccurs="0"/>
+						<xs:choice minOccurs="0">
+							<xs:element name="plan-id" type="id_type"/>
+							<xs:element name="plan-name" type="string"/>
+							<xs:element name="plan-guid" type="string"/>
+							<xs:element name="plan-external-id" type="string"/>
+						</xs:choice>
+                        <xs:element name="mail" type="WebspaceMailPreferences" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get">
+				<xs:annotation>
+					<xs:documentation>Get domain(s) data from server</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainFilterType">
+							<xs:annotation>
+								<xs:documentation>Filter domains to be refreshed</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="dataset" type="domainDatasetType">
+							<xs:annotation>
+								<xs:documentation>Domain information to be retrieved</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="set">
+				<xs:annotation>
+					<xs:documentation>Set domain(s) data from server</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainFilterType">
+							<xs:annotation>
+								<xs:documentation>Filter domains to be refreshed</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="values">
+							<xs:annotation>
+								<xs:documentation>Domain information to be updated</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="gen_setup" type="setGenSetupType" minOccurs="0"/>
+									<xs:element name="limits" type="domainLimits" minOccurs="0"/>
+									<xs:element name="prefs" type="domainPrefs" minOccurs="0"/>
+									<xs:element name="hosting" type="domainHostingAgentSet" minOccurs="0"/>
+									<xs:element name="disk_usage" minOccurs="0">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="mailboxes" minOccurs="0"/>
+												<xs:element name="maillists" minOccurs="0"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="performance" type="DomainPerformanceType" minOccurs="0"/>
+									<xs:element name="permissions" type="domainPerms" minOccurs="0"/>
+									<xs:element name="php-settings" type="phpSettings" minOccurs="0"/>
+                                    <xs:element name="mail" type="WebspaceMailPreferences" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="del">
+				<xs:annotation>
+					<xs:documentation>Delete domain(s) from server</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainFilterType">
+							<xs:annotation>
+								<xs:documentation>Fliter domains to be deleted</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="cform_buttons_list">
+				<xs:annotation>
+					<xs:documentation>List domain control form buttons</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainFilterType">
+							<xs:annotation>
+								<xs:documentation>Fliter domains to be listed</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get_traffic">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainFilterType"/>
+						<xs:element name="since_date" type="date" minOccurs="0"/>
+						<xs:element name="to_date" type="date" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="set_traffic">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="dom_id" type="int"/>
+						<xs:element name="date" type="date"/>
+						<xs:element name="smtp_in" type="long"/>
+						<xs:element name="smtp_out" type="long"/>
+						<xs:element name="pop3_imap_in" type="long"/>
+						<xs:element name="pop3_imap_out" type="long"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-limit-descriptor">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainFilterType">
+							<xs:annotation>
+								<xs:documentation>Fliter domains to be deleted</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-permission-descriptor">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainFilterType">
+							<xs:annotation>
+								<xs:documentation>Fliter domains to be deleted</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-physical-hosting-descriptor">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainFilterType">
+							<xs:annotation>
+								<xs:documentation>Fliter domains to be deleted</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="switch-subscription">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainFilterType"/>
+						<xs:choice>
+							<xs:element name="plan-guid" type="string"/>
+							<xs:element name="plan-external-id" type="string"/>
+							<xs:element name="no-plan"/>
+						</xs:choice>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="sync-subscription">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainFilterType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="add-subscription">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainFilterType"/>
+						<xs:choice>
+							<xs:element name="plan-guid" type="string"/>
+							<xs:element name="plan-external-id" type="string"/>
+						</xs:choice>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="remove-subscription">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="domainFilterType"/>
+						<xs:choice>
+							<xs:element name="plan-guid" type="string"/>
+							<xs:element name="plan-external-id" type="string"/>
+						</xs:choice>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="add-package" type="WebspaceApplicationInput"/>
+			<xs:element name="remove-package" type="WebspaceApplicationInput"/>
+			<xs:element name="add-plan-item" type="WebspacePlanItemInputType"/>
+			<xs:element name="remove-plan-item" type="WebspacePlanItemInputType"/>
+			<xs:element name="enable-aps-filter" type="WebspaceApsFilterInputType"/>
+			<xs:element name="disable-aps-filter" type="WebspaceApsFilterInputType"/>
+			<xs:element name="get-changed">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="resource-usage">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="from" type="datetime">
+										<xs:annotation>
+											<xs:documentation>Date and time in ISO8601 format</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="db-servers">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="add" type="WebspaceDbServerInput"/>
+						<xs:element name="remove" type="WebspaceDbServerInput"/>
+						<xs:element name="list">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="filter" type="domainFilterType"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="DomainResponseType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add">
+				<xs:annotation>
+					<xs:documentation>Add domain</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="id" type="id_type" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>New domain ID</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="guid" type="string" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>New domain GUID</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get">
+				<xs:annotation>
+					<xs:documentation>Getting result</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultFilterType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="data" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>Domain datas. Will not returned if status isn't "ok"</xs:documentation>
+												</xs:annotation>
+												<xs:complexType>
+													<xs:sequence>
+														<xs:element name="gen_info" type="domainGenInfoType" minOccurs="0"/>
+														<xs:element name="hosting" type="domainHostingAgentGet" minOccurs="0"/>
+														<xs:element name="hosting-basic" type="domainHostingAgentGet" minOccurs="0"/>
+														<xs:element name="limits" minOccurs="0">
+															<xs:complexType>
+																<xs:complexContent>
+																	<xs:extension base="domainLimits"/>
+																</xs:complexContent>
+															</xs:complexType>
+														</xs:element>
+														<xs:element name="stat" type="domainStat" minOccurs="0"/>
+														<xs:element name="prefs" type="domainPrefs" minOccurs="0"/>
+														<xs:element name="disk_usage" minOccurs="0">
+															<xs:complexType>
+																<xs:sequence>
+																	<xs:element name="httpdocs" type="xs:long"/>
+																	<xs:element name="httpsdocs" type="xs:long"/>
+																	<xs:element name="subdomains" type="xs:long"/>
+																	<xs:element name="web_users" type="xs:long"/>
+																	<xs:element name="anonftp" type="xs:long"/>
+																	<xs:element name="logs" type="xs:long"/>
+																	<xs:choice>
+																		<xs:element name="dbases" type="xs:long">
+																			<xs:annotation>
+																				<xs:documentation>for Unix Plesk</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:sequence>
+																			<xs:element name="mysql_dbases" type="int">
+																				<xs:annotation>
+																					<xs:documentation>for Win Plesk</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																			<xs:element name="mssql_dbases" type="int">
+																				<xs:annotation>
+																					<xs:documentation>for Win Plesk</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:choice>
+																	<xs:element name="mailboxes" type="xs:long"/>
+																	<xs:element name="maillists" type="xs:long"/>
+																	<xs:element name="domaindumps" type="xs:long"/>
+																	<xs:sequence minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>for Plesk Unix versio since n only 1.3.5</xs:documentation>
+																		</xs:annotation>
+																		<xs:element name="configs" type="xs:long"/>
+																		<xs:element name="chroot" type="xs:long"/>
+																	</xs:sequence>
+																</xs:sequence>
+															</xs:complexType>
+														</xs:element>
+														<xs:element name="performance" type="DomainPerformanceType" minOccurs="0"/>
+														<xs:element name="subscriptions" type="SubscriptionsList" minOccurs="0"/>
+														<xs:element name="permissions" type="domainPerms" minOccurs="0"/>
+														<xs:element name="plan-items" minOccurs="0">
+															<xs:complexType>
+																<xs:sequence>
+																	<xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+																		<xs:complexType>
+																			<xs:sequence>
+																				<xs:element name="name" type="string"/>
+																			</xs:sequence>
+																		</xs:complexType>
+																	</xs:element>
+																</xs:sequence>
+															</xs:complexType>
+														</xs:element>
+														<xs:element name="php-settings" type="phpSettings" minOccurs="0"/>
+														<xs:element name="resource-usage" type="resourceUsage" minOccurs="0"/>
+                                                        <xs:element name="mail" type="WebspaceMailPreferences" minOccurs="0"/>
+														<xs:element name="aps-filter" type="boolean" minOccurs="0"/>
+														<xs:element name="packages" minOccurs="0">
+															<xs:complexType>
+																<xs:sequence>
+																	<xs:element name="package" type="APSIdentifierType" minOccurs="0" maxOccurs="unbounded"/>
+																</xs:sequence>
+															</xs:complexType>
+														</xs:element>
+													</xs:sequence>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="del">
+				<xs:annotation>
+					<xs:documentation>Deleting result</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="resultFilterType" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="set">
+				<xs:annotation>
+					<xs:documentation>Updating result</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="resultFilterType" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="cform_buttons_list">
+				<xs:annotation>
+					<xs:documentation>List domain control form buttons result</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultFilterType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="button" type="buttonDataType" minOccurs="0" maxOccurs="unbounded">
+												<xs:annotation>
+													<xs:documentation>BUttons list if no error occured</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get_traffic">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultFilterType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="traffic" type="trafficType" minOccurs="0" maxOccurs="unbounded"/>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="set_traffic">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="id" type="int"/>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-limit-descriptor">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultFilterType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="descriptor" type="ObjectDescriptor" minOccurs="0"/>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-permission-descriptor">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultFilterType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="descriptor" type="ObjectDescriptor" minOccurs="0"/>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-physical-hosting-descriptor">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultFilterType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="descriptor" type="ObjectDescriptor" minOccurs="0"/>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="switch-subscription">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultFilterType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="problems" type="string" minOccurs="0"/>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="sync-subscription">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultFilterType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="problems" type="string" minOccurs="0"/>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="add-subscription">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultFilterType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="problems" type="string" minOccurs="0"/>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="remove-subscription">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultFilterType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="problems" type="string" minOccurs="0"/>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="add-package">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="remove-package">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="resultFilterType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="add-plan-item">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="WebspacePlanItemResultType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="remove-plan-item">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="WebspacePlanItemResultType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="enable-aps-filter" type="WebspaceApsFilterOutputType"/>
+			<xs:element name="disable-aps-filter" type="WebspaceApsFilterOutputType"/>
+			<xs:element name="get-changed">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="subscription" maxOccurs="unbounded">
+												<xs:complexType>
+													<xs:all>
+														<xs:element name="name"/>
+														<xs:element name="id"/>
+														<xs:element name="external-id"/>
+													</xs:all>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="db-servers">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="add">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="result" type="resultFilterType" minOccurs="0" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="remove">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="result" type="resultFilterType" minOccurs="0" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="list" type="WebspaceDbServerListOutputType"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="WebspaceApplicationInput">
+		<xs:sequence>
+			<xs:element name="filter" type="domainFilterType">
+				<xs:annotation>
+					<xs:documentation>Filter objects to be updated</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="package" type="ApplicationInput" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WebspacePlanItemInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="domainFilterType">
+				<xs:annotation>
+					<xs:documentation>Filter objects to be updated</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="plan-item">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="name" type="string"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WebspacePlanItemResultType">
+		<xs:complexContent>
+			<xs:extension base="resultFilterType">
+				<xs:sequence>
+					<xs:element name="item" type="string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="WebspaceApsFilterInputType">
+		<xs:sequence>
+			<xs:element name="filter" type="domainFilterType">
+				<xs:annotation>
+					<xs:documentation>Filter objects to be updated</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WebspaceApsFilterOutputType">
+		<xs:sequence>
+			<xs:element name="result" type="resultFilterType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WebspaceDbServerInput">
+		<xs:sequence>
+			<xs:element name="filter" type="domainFilterType"/>
+			<xs:element name="db-server" type="dbServerInput" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WebspaceDbServerListOutputType">
+		<xs:sequence>
+			<xs:element name="result">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="resultFilterType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="db-server" type="dbServerOutput" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+    <xs:complexType name="WebspaceMailPreferences">
+        <xs:complexContent>
+            <xs:extension base="MailPreferences">
+                <xs:sequence>
+                    <xs:element name="outgoing-messages-mbox-limit" type="string" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Mailname outgoing messages (per hour)</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="outgoing-messages-domain-limit" type="string" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Domain outgoing messages (per hour)</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="outgoing-messages-subscription-limit" type="string" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Subscription outgoing messages (per hour)</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="outgoing-messages-enable-sendmail" type="booleanWithDefault" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Scripts will be able to send mail even when the limits on outgoing messages are reached for the corresponding mailbox and domain.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="outgoing-messages-overlimit-percent" type="int" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Percentage of email messages to accept into mail queue and retry for delivery in next hour</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

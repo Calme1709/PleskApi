@@ -1,0 +1,864 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_common.xsd"/>
+    <xs:include schemaLocation="plesk_domain.xsd"/>
+	<xs:complexType name="keyType">
+		<xs:annotation>
+			<xs:documentation>Server license key info</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="property" type="KeyPropertyType" maxOccurs="unbounded"/>
+			<xs:element name="content" type="xs:base64Binary"/>
+            <xs:element name="additional-key" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>If the key is additional key, this will be set to true</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="serverGenInfoType">
+		<xs:annotation>
+			<xs:documentation>Server general info</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="server_name" type="string"/>
+			<xs:element name="server_guid" type="string"/>
+			<xs:element name="external-id" type="string" minOccurs="0"/>
+			<xs:element name="vps-optimized-status" type="VPSOptimizedStatus" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Show VPS optimized status.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="mode" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="string">
+						<xs:enumeration value="poweruser"/>
+						<xs:enumeration value="standard"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="serverPassword">
+		<xs:annotation>
+			<xs:documentation>Server Admin Password</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="string">
+			<xs:minLength value="5"/>
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="componentsType">
+		<xs:annotation>
+			<xs:documentation>Server componets info</xs:documentation>
+		</xs:annotation>
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="component">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="name">
+							<xs:annotation>
+								<xs:documentation>Component Name</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="string">
+									<xs:minLength value="1"/>
+									<xs:maxLength value="255"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="version">
+							<xs:annotation>
+								<xs:documentation>Component Version</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="string">
+									<xs:minLength value="1"/>
+									<xs:maxLength value="255"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="servicesState">
+		<xs:annotation>
+			<xs:documentation>Server services state</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="srv">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="id">
+							<xs:annotation>
+								<xs:documentation>Service ID</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="string">
+									<xs:minLength value="1"/>
+									<xs:maxLength value="255"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="title">
+							<xs:annotation>
+								<xs:documentation>Service Title</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="string">
+									<xs:minLength value="1"/>
+									<xs:maxLength value="255"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="state">
+							<xs:annotation>
+								<xs:documentation>Service State</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="string">
+									<xs:minLength value="1"/>
+									<xs:maxLength value="255"/>
+									<xs:enumeration value="running"/>
+									<xs:enumeration value="stopped"/>
+									<xs:enumeration value="none"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="error" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Optional Error</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="string">
+									<xs:minLength value="1"/>
+									<xs:maxLength value="255"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="serverPrefs">
+		<xs:annotation>
+			<xs:documentation>Server preferences</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+            <xs:element name="max_connections" type="int" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Max Connections</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="max_connections_per_ip" type="int" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Max Connections Per IP</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="outgoing_email_mode" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Outgoing email mode</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="string">
+                        <xs:enumeration value="domain-ip">
+                            <xs:annotation>
+                                <xs:documentation>Send from domain IP addresses</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="domain-name">
+                            <xs:annotation>
+                                <xs:documentation>Send from domain IP addresses and use SMTP greeting</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="explicit-ip">
+                            <xs:annotation>
+                                <xs:documentation>Send from the specified IP addresses</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="outgoing_email_mode_explicit_ipv4" type="string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>IPv4</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="outgoing_email_mode_explicit_ipv6" type="string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>IPv6</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="outgoing_antispam" type="boolean" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Enables/disables outgoing antispam</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="outgoing_messages_mbox_limit" type="int" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Outgoing messages from a mail (per hour)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="outgoing_messages_domain_limit" type="int" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Outgoing messages from a domain (per hour)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="outgoing_messages_subscription_limit" type="int" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Outgoing messages from a subscription (per hour)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="enable_sendmail" type="boolean" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Enables/disables sendmail (supported by Plesk for Unix only)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="report_period" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Outgoing mail reporting period</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="string">
+                        <xs:enumeration value="P1D">
+                            <xs:annotation>
+                                <xs:documentation>1 day</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="P1W">
+                            <xs:annotation>
+                                <xs:documentation>1 week</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="P2W">
+                            <xs:annotation>
+                                <xs:documentation>2 weeks</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="P1M">
+                            <xs:annotation>
+                                <xs:documentation>1 month</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="notification_period" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Outgoing mail notification period</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="string">
+                        <xs:enumeration value="PT15M">
+                            <xs:annotation>
+                                <xs:documentation>15 minutes</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="PT1H">
+                            <xs:annotation>
+                                <xs:documentation>1 hour</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="PT6H">
+                            <xs:annotation>
+                                <xs:documentation>6 hours</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="PT12H">
+                            <xs:annotation>
+                                <xs:documentation>12 hours</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="P1D">
+                            <xs:annotation>
+                                <xs:documentation>1 day</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+			<xs:element name="stat_ttl" type="int" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Time-To-Live for traffic statistics (months)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+            <xs:element name="include_remote_databases" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Include remote SQL databases in the disk space usage calculation</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="boolean"/>
+                </xs:simpleType>
+            </xs:element>
+			<xs:element name="traffic_accounting" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Traffic accounting type, bit mask, 1=in, 2=out</xs:documentation>
+					<xs:documentation>Time-To-Live for traffic statistics (months)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="int">
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation source="in">in</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="2">
+							<xs:annotation>
+								<xs:documentation>out</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="3">
+							<xs:annotation>
+								<xs:documentation>in+out</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="restart_apache_interval" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Restart apache interval (secs), not for Win</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="int"/>
+				</xs:simpleType>
+			</xs:element>
+            <xs:element name="apache_pipelog" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Increases server capacity for sites through slight reduction of performance. Recommended if 300+ sites are hosted, not for Win</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="boolean"/>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="ftp_over_ssl" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Mode for secured FTP communications between server and client using FTP-SSL (TLS). This setting will be applied to all IPs on the server.</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="string">
+                        <xs:enumeration value="disabled"/>
+                        <xs:enumeration value="enabled"/>
+                        <xs:enumeration value="required"/>
+                        <xs:enumeration value="custom"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="mail_notifications" type="boolean" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Enables/disables mail notifications from Plesk</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="smtp_use_default_settings" type="boolean" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Use Panel internal mail account on a locally installed mail server (supported by Plesk for Windows only)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="smtp_host" type="string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>SMTP host name or IP address</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="smtp_port" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>SMTP port</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="int">
+                        <xs:minInclusive value="1"/>
+                        <xs:maxInclusive value="65535"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="smtp_login" type="string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>SMTP login</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="smtp_password" type="string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>SMTP password</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="smtp_tls" type="boolean" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>SMTP server requires encrypted connection</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="smtp_allow_users" type="boolean" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Allow hosting scripts to send mail (supported by Plesk for Unix only)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="aps_force_updates" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Force updates for all installed applications</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="boolean"/>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="aps_suggest_updates" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Suggest auto updates for all newly installed applications</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="boolean"/>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="preview_protection" type="boolean" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Site preview protection, requires ftp login/password for access to preview</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+			<xs:element name="waf-rule-engine" minOccurs="0">
+			   <xs:annotation>
+				   <xs:documentation>Web application firewall mode</xs:documentation>
+			   </xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="string">
+						<xs:enumeration value="on"/>
+						<xs:enumeration value="detection-only"/>
+						<xs:enumeration value="off"/>
+					</xs:restriction>
+				</xs:simpleType>
+		   </xs:element>
+			<xs:element name="waf-rule-set" type="string" minOccurs="0">
+			   <xs:annotation>
+				   <xs:documentation>Web application firewall rule set</xs:documentation>
+			   </xs:annotation>
+		   </xs:element>
+			<xs:element name="waf-web-server" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Web application firewall web server</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="string">
+						<xs:enumeration value="apache"/>
+						<xs:enumeration value="nginx"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+        </xs:all>
+	</xs:complexType>
+	<xs:complexType name="serverSessionSetup">
+		<xs:annotation>
+			<xs:documentation>Server Session Setup</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="login_timeout" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Login Timout/Session iddle Period ( minutes )</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="int">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="99999"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="statType">
+		<xs:annotation>
+			<xs:documentation>Server statistics info</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="objects" type="objectsStatType">
+				<xs:annotation>
+					<xs:documentation>Logical objects usage</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="version" type="versionStatType">
+				<xs:annotation>
+					<xs:documentation>Server version info</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="other" type="otherStatType">
+				<xs:annotation>
+					<xs:documentation>Misc server stats</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="load_avg" type="load_avgStatType">
+				<xs:annotation>
+					<xs:documentation>Server load</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="mem" type="memStatType">
+				<xs:annotation>
+					<xs:documentation>Memory usage</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="swap" type="swapStatType">
+				<xs:annotation>
+					<xs:documentation>Swap usage</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="diskspace" type="diskspaceStatType">
+				<xs:annotation>
+					<xs:documentation>Disk usage</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="objectsStatType">
+		<xs:annotation>
+			<xs:documentation>Objects statistics</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="clients" type="unsignedInt" default="0"/>
+			<xs:element name="domains" type="unsignedInt" default="0"/>
+			<xs:element name="active_domains" type="unsignedInt" default="0"/>
+			<xs:element name="mail_boxes" type="unsignedInt" default="0"/>
+			<xs:element name="mail_redirects" type="unsignedInt" default="0"/>
+			<xs:element name="mail_groups" type="unsignedInt" default="0"/>
+			<xs:element name="mail_responders" type="unsignedInt" default="0"/>
+			<xs:element name="web_users" type="unsignedInt" default="0"/>
+			<xs:element name="databases" type="unsignedInt" default="0"/>
+			<xs:element name="database_users" type="unsignedInt" default="0"/>
+			<xs:element name="problem_clients" type="unsignedInt" default="0"/>
+			<xs:element name="problem_domains" type="unsignedInt" default="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="versionStatType">
+		<xs:annotation>
+			<xs:documentation>Server versions</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="plesk_name">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:whiteSpace value="collapse"/>
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="plesk_version">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:whiteSpace value="collapse"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="plesk_os">
+				<xs:annotation>
+					<xs:documentation>f.e. "RedHat","FedoraCore"</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:whiteSpace value="collapse"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="plesk_os_version">
+				<xs:annotation>
+					<xs:documentation>f.e. "9.0"</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:whiteSpace value="collapse"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="plesk_build">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:whiteSpace value="collapse"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="os_release">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:whiteSpace value="collapse"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="veid" type="xs:integer" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="otherStatType">
+		<xs:annotation>
+			<xs:documentation>Misc server stats</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="cpu" type="string"/>
+			<xs:element name="uptime" type="unsignedInt"/>
+			<xs:element name="inside_vz" type="boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="load_avgStatType">
+		<xs:annotation>
+			<xs:documentation>Server loads</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="l1" type="double" default="0"/>
+			<xs:element name="l5" type="double" default="0"/>
+			<xs:element name="l15" type="double" default="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="memStatType">
+		<xs:annotation>
+			<xs:documentation>Memory usage</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="total" type="size"/>
+			<xs:element name="used" type="size"/>
+			<xs:element name="free" type="size"/>
+			<xs:element name="shared" type="size"/>
+			<xs:element name="buffer" type="size"/>
+			<xs:element name="cached" type="size"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="swapStatType">
+		<xs:annotation>
+			<xs:documentation>Swap usage</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="total" type="size"/>
+			<xs:element name="used" type="size"/>
+			<xs:element name="free" type="size"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="diskspaceStatType">
+		<xs:annotation>
+			<xs:documentation>Disk usage</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="device" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Partotions or devices</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="name">
+							<xs:annotation>
+								<xs:documentation>Partition or device name</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:minLength value="1"/>
+									<xs:whiteSpace value="collapse"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="total" type="size"/>
+						<xs:element name="used" type="size"/>
+						<xs:element name="free" type="size"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+    <xs:complexType name="AdminAliasFilterType">
+        <xs:sequence>
+            <xs:element name="login" type="string" maxOccurs="unbounded" minOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AdminAliasInfoType">
+        <xs:all>
+            <xs:element name="login" type="string" maxOccurs="1" minOccurs="0"/>
+            <xs:element name="password" type="string" maxOccurs="1" minOccurs="0"/>
+            <xs:element name="email" type="emailType" maxOccurs="1" minOccurs="0"/>
+            <xs:element name="contact" type="string" maxOccurs="1" minOccurs="0"/>
+            <xs:element name="comment" type="string" default="" maxOccurs="1" minOccurs="0"/>
+            <xs:element name="status" type="boolean" default="true" maxOccurs="1" minOccurs="0"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="AdminAliasAddType">
+        <xs:sequence>
+            <xs:element name="data" type="AdminAliasInfoType" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AdminAliasDelType">
+        <xs:sequence>
+            <xs:element name="filter" type="AdminAliasFilterType" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AdminAliasSetType">
+        <xs:sequence>
+            <xs:element name="filter" type="AdminAliasFilterType" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="data" type="AdminAliasInfoType" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DomainRestrictionAddType">
+        <xs:sequence>
+            <xs:element name="name" type="string" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DomainRestrictionRemoveType">
+        <xs:sequence>
+            <xs:element name="name" type="string" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DomainRestrictionRenameType">
+        <xs:sequence>
+            <xs:element name="name" type="string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="new-name" type="string" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DomainRestrictionListType"></xs:complexType>
+    <xs:complexType name="DomainRestrictionEnableType"></xs:complexType>
+    <xs:complexType name="DomainRestrictionDisableType"></xs:complexType>
+	<xs:complexType name="adminType">
+		<xs:annotation>
+			<xs:documentation>Admin info</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:sequence minOccurs="0">
+				<xs:element name="admin_cname" type="string" minOccurs="0"/>
+				<xs:element name="admin_pname" type="string"/>
+				<xs:element name="admin_phone" type="string" minOccurs="0"/>
+				<xs:element name="admin_fax" type="string" minOccurs="0"/>
+				<xs:element name="admin_email" type="emailType"/>
+				<xs:element name="admin_address" type="string" minOccurs="0"/>
+				<xs:element name="admin_city" type="string" minOccurs="0"/>
+				<xs:element name="admin_state" type="string" minOccurs="0"/>
+				<xs:element name="admin_pcode" type="zipcodeType" minOccurs="0"/>
+				<xs:element name="admin_country" type="string" minOccurs="0"/>
+				<xs:element name="send_announce" type="boolean" default="false" minOccurs="0"/>
+				<xs:element name="admin_locale" type="string" minOccurs="0"/>
+				<xs:element name="admin_multiple_sessions" type="boolean" default="true" minOccurs="0"/>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:element name="uid" type="string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>SSO UID</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="global-login" type="string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>SSO global login</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="interfacesType">
+		<xs:annotation>
+			<xs:documentation>Network interfaces</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="interface" type="netInterface"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="shellType">
+		<xs:annotation>
+			<xs:documentation>Server shell</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="string"/>
+			<xs:element name="path" type="string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="srvOpType">
+		<xs:annotation>
+			<xs:documentation>Service operation</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="string">
+			<xs:enumeration value="start"/>
+			<xs:enumeration value="stop"/>
+			<xs:enumeration value="restart"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="srvIdType">
+		<xs:annotation>
+			<xs:documentation>Service ID</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="string"/>
+	</xs:simpleType>
+	<xs:complexType name="initialSetupType">
+		<xs:annotation>
+			<xs:documentation>Data required for initial Plesk server setup</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="admin" type="adminType">
+				<xs:annotation>
+					<xs:documentation>Server administrator data</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="password" type="serverPassword">
+				<xs:annotation>
+					<xs:documentation>New Plesk server administrator password to be set on the server</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="server_name" type="string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Full hostname to be set on the server</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="trial_license" type="boolean" minOccurs="0" maxOccurs="1" default="false">
+				<xs:annotation>
+					<xs:documentation>Whether to install trial license on the server</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	<xs:simpleType name="miscPropertyNameType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="aeParamsType">
+		<xs:sequence>
+			<xs:element name="host" type="xs:string"/>
+			<xs:element name="user" type="xs:string"/>
+			<xs:element name="password" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="KeyPropertyType">
+		<xs:sequence>
+			<xs:element name="name"/>
+			<xs:element name="value" type="string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VPSOptimizedStatus">
+		<xs:sequence>
+			<xs:element name="aspect" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="name" type="string"/>
+						<xs:element name="value" type="string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+    <xs:complexType name="serverCertificates">
+        <xs:annotation>
+            <xs:documentation>Server Certificates</xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name="panel" type="certificate" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Panel Certificate</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="mail-server" type="certificate" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Mail Server Certificate</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="certificate">
+        <xs:annotation>
+            <xs:documentation>Certificate</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:choice>
+                <xs:element name="webspace" type="domainName"/>
+                <xs:element name="site" type="domainName"/>
+                <xs:element name="admin"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

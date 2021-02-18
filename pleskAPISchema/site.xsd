@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:include schemaLocation="plesk_domain.xsd"/>
+	<xs:complexType name="siteFilterType">
+		<xs:annotation>
+			<xs:documentation>Fliter domains list</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="id" type="id_type" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>site ID ( ID in Plesk DB)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="parent-id" type="int" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>webspace ID </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="parent-site-id" type="int" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>site ID </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="name" type="string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>site name (UTF-8)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="parent-name" type="string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>webspace name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="parent-site-name" type="string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>site name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="guid" type="string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Site GUID</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="parent-guid" type="string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>webspace GUID</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="parent-site-guid" type="string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>site GUID</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="SiteTypeRequest">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="gen_setup">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="name" type="domainName"/>
+									<xs:element name="htype" type="domainHType" minOccurs="0"/>
+									<xs:element name="status" type="string" minOccurs="0"/>
+									<xs:choice minOccurs="0">
+										<xs:element name="webspace-name" type="string"/>
+										<xs:element name="webspace-id" type="id_type"/>
+										<xs:element name="webspace-guid" type="string"/>
+									</xs:choice>
+									<xs:choice minOccurs="0">
+										<xs:element name="parent-site-name" type="string"/>
+										<xs:element name="parent-site-id" type="id_type"/>
+										<xs:element name="parent-site-guid" type="string"/>
+									</xs:choice>
+                                    <xs:element name="description" type="string" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="hosting" type="siteHostingAgentSet" minOccurs="0"/>
+						<xs:element name="prefs" type="domainPrefs" minOccurs="0"/>
+						<xs:element name="performance" type="DomainPerformanceType" minOccurs="0"/>
+						<xs:element name="mail" type="SiteMailPreferences" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get">
+				<xs:annotation>
+					<xs:documentation>Get domain(s) data from server</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="siteFilterType">
+							<xs:annotation>
+								<xs:documentation>Filter domains to be refreshed</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="dataset" type="siteDatasetType">
+							<xs:annotation>
+								<xs:documentation>Domain information to be retrieved</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="set">
+				<xs:annotation>
+					<xs:documentation>Set domain(s) data from server</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="siteFilterType">
+							<xs:annotation>
+								<xs:documentation>Filter domains to be refreshed</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="values">
+							<xs:annotation>
+								<xs:documentation>Domain information to be updated</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="gen_setup" type="setSiteGenSetupType" minOccurs="0"/>
+									<xs:element name="prefs" type="domainPrefs" minOccurs="0"/>
+									<xs:element name="hosting" type="siteHostingAgentSet" minOccurs="0"/>
+									<xs:element name="disk_usage" minOccurs="0">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="mailboxes" minOccurs="0"/>
+												<xs:element name="maillists" minOccurs="0"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="performance" type="DomainPerformanceType" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="del">
+				<xs:annotation>
+					<xs:documentation>Delete domain(s) from server</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="siteFilterType">
+							<xs:annotation>
+								<xs:documentation>Fliter domains to be deleted</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="cform_buttons_list">
+				<xs:annotation>
+					<xs:documentation>List domain control form buttons</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="siteFilterType">
+							<xs:annotation>
+								<xs:documentation>Fliter domains to be listed</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get_traffic">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="siteFilterType"/>
+						<xs:element name="since_date" type="date" minOccurs="0"/>
+						<xs:element name="to_date" type="date" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="set_traffic">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="dom_id" type="int"/>
+						<xs:element name="date" type="date"/>
+						<xs:element name="smtp_in" type="long"/>
+						<xs:element name="smtp_out" type="long"/>
+						<xs:element name="pop3_imap_in" type="long"/>
+						<xs:element name="pop3_imap_out" type="long"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-physical-hosting-descriptor">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="filter" type="siteFilterType">
+							<xs:annotation>
+								<xs:documentation>Fliter domains to be deleted</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="SiteResponseType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="add">
+				<xs:annotation>
+					<xs:documentation>Add domain</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="id" type="id_type" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>New domain ID</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="guid" type="string" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>New domain GUID</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get">
+				<xs:annotation>
+					<xs:documentation>Getting result</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultFilterType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="data" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>Domain datas. Will not returned if status isn't "ok"</xs:documentation>
+												</xs:annotation>
+												<xs:complexType>
+													<xs:sequence>
+														<xs:element name="gen_info" type="siteGenInfoType" minOccurs="0"/>
+														<xs:element name="hosting" type="domainHostingAgentGet" minOccurs="0"/>
+														<xs:element name="stat" type="siteStat" minOccurs="0"/>
+														<xs:element name="prefs" type="domainPrefs" minOccurs="0"/>
+														<xs:element name="disk_usage" minOccurs="0">
+															<xs:complexType>
+																<xs:sequence>
+																	<xs:element name="httpdocs" type="xs:long"/>
+																	<xs:element name="httpsdocs" type="xs:long"/>
+																	<xs:element name="subdomains" type="xs:long"/>
+																	<xs:element name="web_users" type="xs:long"/>
+																	<xs:element name="anonftp" type="xs:long"/>
+																	<xs:element name="logs" type="xs:long"/>
+																	<xs:choice>
+																		<xs:element name="dbases" type="xs:long">
+																			<xs:annotation>
+																				<xs:documentation>for Unix Plesk</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:sequence>
+																			<xs:element name="mysql_dbases" type="int">
+																				<xs:annotation>
+																					<xs:documentation>for Win Plesk</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																			<xs:element name="mssql_dbases" type="int">
+																				<xs:annotation>
+																					<xs:documentation>for Win Plesk</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:choice>
+																	<xs:element name="mailboxes" type="xs:long"/>
+																	<xs:element name="maillists" type="xs:long"/>
+																	<xs:element name="domaindumps" type="xs:long"/>
+																	<xs:sequence minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>for Plesk Unix versio since n only 1.3.5</xs:documentation>
+																		</xs:annotation>
+																		<xs:element name="configs" type="xs:long"/>
+																		<xs:element name="chroot" type="xs:long"/>
+																	</xs:sequence>
+																</xs:sequence>
+															</xs:complexType>
+														</xs:element>
+														<xs:element name="performance" type="DomainPerformanceType" minOccurs="0"/>
+													</xs:sequence>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="del">
+				<xs:annotation>
+					<xs:documentation>Deleting result</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="resultFilterType" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="set">
+				<xs:annotation>
+					<xs:documentation>Updating result</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="resultFilterType" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="cform_buttons_list">
+				<xs:annotation>
+					<xs:documentation>List domain control form buttons result</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultFilterType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="button" type="buttonDataType" minOccurs="0" maxOccurs="unbounded">
+												<xs:annotation>
+													<xs:documentation>BUttons list if no error occured</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get_traffic">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultFilterType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="traffic" type="trafficType" minOccurs="0" maxOccurs="unbounded"/>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="set_traffic">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="id" type="int"/>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-physical-hosting-descriptor">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultFilterType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="descriptor" type="ObjectDescriptor" minOccurs="0"/>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="siteHostingAgentSet">
+		<xs:annotation>
+			<xs:documentation>Domain Hosting (Plesk Agent specific) for 'set' operation</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="vrt_hst">
+				<xs:annotation>
+					<xs:documentation>Physical hosting</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="sitePhHostingSet"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="std_fwd" type="domainSFHostingBase">
+				<xs:annotation>
+					<xs:documentation>Standard forwarding</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="frm_fwd" type="domainFFHostingBase">
+				<xs:annotation>
+					<xs:documentation>Frame forwarding</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="none">
+				<xs:annotation>
+					<xs:documentation>No hosting</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="siteGenInfoType">
+		<xs:annotation>
+			<xs:documentation>General domain information</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="cr_date" type="date"/>
+			<xs:element name="name" type="domainName">
+				<xs:annotation>
+					<xs:documentation>Domain name to be displayed in UI</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ascii-name" type="string"/>
+			<xs:element name="status" type="objectStatus"/>
+			<xs:element name="real_size" type="size" default="0"/>
+			<xs:element name="dns_ip_address" type="ip_address" minOccurs="0" maxOccurs="2">
+				<xs:annotation>
+					<xs:documentation>Domain IP addresses in DNS A and AAAA records. Use it in case of unexisted domain hosting.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="htype" type="domainHType"/>
+			<xs:element name="guid" type="string"/>
+			<xs:element name="webspace-guid" type="string"/>
+			<xs:element name="sb-site-uuid" type="string" minOccurs="0"/>
+			<xs:element name="webspace-id" type="id_type"/>
+            <xs:element name="description" type="string" minOccurs="0"/>
+			<xs:element name="turn-off-action" type="turnOffAction" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="sitePhHostingSet">
+		<xs:annotation>
+			<xs:documentation>Domain Physical Hosting for 'set' operation</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="property" type="PleskPhysHostingPropertyType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="siteDatasetType">
+		<xs:annotation>
+			<xs:documentation>Data to be operated</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="gen_info" type="NoneType" minOccurs="0"/>
+			<xs:element name="hosting" type="NoneType" minOccurs="0"/>
+			<xs:element name="stat" type="NoneType" minOccurs="0"/>
+			<xs:element name="prefs" type="NoneType" minOccurs="0"/>
+			<xs:element name="disk_usage" type="NoneType" minOccurs="0"/>
+			<xs:element name="performance" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="setSiteGenSetupType">
+		<xs:annotation>
+			<xs:documentation>Domain general setup info</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="status" type="objectStatus" minOccurs="0"/>
+			<xs:element name="name" type="domainName" minOccurs="0"/>
+			<xs:element name="guid" type="NoneType" minOccurs="0"/>
+            <xs:element name="description" type="string" minOccurs="0"/>
+			<xs:element name="turn-off-action" type="turnOffAction" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="siteStat">
+		<xs:annotation>
+			<xs:documentation>Domain statistics</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="traffic" type="size"/>
+			<xs:element name="subdom" type="unsignedInt">
+				<xs:annotation>
+					<xs:documentation>Subdomains</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="wu" type="unsignedInt">
+				<xs:annotation>
+					<xs:documentation>Web Users</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="box" type="unsignedInt">
+				<xs:annotation>
+					<xs:documentation>Mail Boxes</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="redir" type="unsignedInt">
+				<xs:annotation>
+					<xs:documentation>Mail Redirects</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="mg" type="unsignedInt">
+				<xs:annotation>
+					<xs:documentation>Mail Groups</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="resp" type="unsignedInt">
+				<xs:annotation>
+					<xs:documentation>Mail responses</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="maillists" type="unsignedInt">
+				<xs:annotation>
+					<xs:documentation>Maillists</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="db" type="unsignedInt">
+				<xs:annotation>
+					<xs:documentation>DataBases</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="mssql_db" type="unsignedInt">
+				<xs:annotation>
+					<xs:documentation>DataBases</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="traffic_prevday" type="size">
+				<xs:annotation>
+					<xs:documentation>Total traffic for prev.day ( in bytes)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="SiteMailPreferences">
+		<xs:sequence>
+			<xs:element name="mailservice" type="boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

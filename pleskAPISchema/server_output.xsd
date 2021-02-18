@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:include schemaLocation="plesk_server.xsd"/>
+    <xs:include schemaLocation="domain_list.xsd"/>
+	<xs:complexType name="GetValidationModeResultType">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SetValidationModeResultType">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ServerOperatorType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="get_protos" type="GetProtosType">
+				<xs:annotation>
+					<xs:documentation>Get supported PA protocols</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="get" type="GetType">
+				<xs:annotation>
+					<xs:documentation>Get operation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="set" type="SetType">
+				<xs:annotation>
+					<xs:documentation>Setup server</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="srv_man" type="ServicesManagementType">
+				<xs:annotation>
+					<xs:documentation>Services management</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="lic_install" type="LicenseInstallType">
+				<xs:annotation>
+					<xs:documentation>Reports license installation started</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+            <xs:element name="lic_update" type="resultType">
+                <xs:annotation>
+                    <xs:documentation>Reports license update done</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+			<xs:element name="initial_setup" type="InitialSetupType">
+				<xs:annotation>
+					<xs:documentation>Initial setup result</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="get_additional_key" type="GetAdditionalKeyType"/>
+            <xs:element name="remove_additional_key" type="GetValidationModeResultType"/>
+            <xs:element name="renew_additional_key" type="RenewAdditionalKeyType"/>
+            <xs:element name="set_misc" type="SetMiscType"/>
+			<xs:element name="get_misc" type="GetMiscType"/>
+			<xs:element name="del_misc" type="DelMiscType"/>
+			<xs:element name="create_session" type="CreateSessionType"/>
+			<xs:element name="set-ppb-connection">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="resultType"/>
+					</xs:sequence>
+				</xs:complexType>
+            </xs:element>
+            <xs:element name="reboot">
+                <xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="resultType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="license-rollback-key">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="resultType">
+										<xs:sequence minOccurs="0">
+											<xs:element name="key-id" type="xs:string">
+												<xs:annotation>
+													<xs:documentation>New key id</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="license-retrieve-keys">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="resultType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+            <xs:element name="lic_get_info" type="keyType"/>
+			<xs:element name="clean-mail-queue">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="resultType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+            <xs:element name="add-admin-alias">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="resultType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="set-admin-alias">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="resultType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="del-admin-alias">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="resultType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="domain-restriction-add">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="resultType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="domain-restriction-remove">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="resultType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="domain-restriction-list">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="enable" type="xs:integer" minOccurs="1" maxOccurs="1"/>
+                        <xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="domain-restriction-rename">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="resultType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="domain-restriction-enable">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="resultType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="domain-restriction-disable">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="resultType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="additionalKeyType">
+		<xs:sequence>
+			<xs:element name="number" type="xs:string"/>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="active" type="xs:boolean"/>
+			<xs:element name="license_update_date" type="xs:int" minOccurs="0"/>
+			<xs:element name="lim_date" type="xs:int" minOccurs="0"/>
+			<xs:element name="content" type="xs:base64Binary"/>
+			<xs:element name="property" type="AdditionalKeyPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="miscResultType">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:sequence minOccurs="0">
+					<xs:element name="property" type="miscPropertyType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="miscPropertyType">
+		<xs:sequence>
+			<xs:element name="name" type="miscPropertyNameType"/>
+			<xs:element name="value" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetProtosType">
+		<xs:sequence>
+			<xs:element name="result" type="GetProtosResultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetType">
+		<xs:sequence>
+			<xs:element name="result" type="GetResultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SetType">
+		<xs:sequence>
+			<xs:element name="result" type="SetResultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ServicesManagementType">
+		<xs:sequence>
+			<xs:element name="result" type="ServicesManagementResultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LicenseInstallType">
+		<xs:sequence>
+			<xs:element name="result" type="LicInstallResultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InitialSetupType">
+		<xs:sequence>
+			<xs:element name="result" type="InitialSetupResultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetAdditionalKeyType">
+		<xs:sequence>
+			<xs:element name="result" type="GetAdditionalKeyResultType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+    <xs:complexType name="RenewAdditionalKeyType">
+        <xs:sequence>
+            <xs:element name="result" type="RenewAdditionalKeyResultType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+	<xs:complexType name="SetMiscType">
+		<xs:sequence>
+			<xs:element name="result" type="miscResultType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetMiscType">
+		<xs:sequence>
+			<xs:element name="result" type="miscResultType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DelMiscType">
+		<xs:sequence>
+			<xs:element name="result" type="miscResultType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EnableAeType">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DisableAeType">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetAeParametersType">
+		<xs:sequence>
+			<xs:element name="result" type="GetAeParametersResultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreateSessionType">
+		<xs:sequence>
+			<xs:element name="result" type="CreateSessionResultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AdditionalKeyPropertyType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="value" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetProtosResultType">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:sequence minOccurs="0">
+					<xs:element name="protos" type="ProtosList"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="GetResultType">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="key" type="keyType"/>
+					<xs:element name="gen_info" type="serverGenInfoType"/>
+					<xs:element name="components" type="componentsType"/>
+					<xs:element name="stat" type="statType"/>
+					<xs:element name="admin" type="adminType"/>
+					<xs:element name="interfaces" type="interfacesType"/>
+					<xs:element name="services_state" type="servicesState"/>
+					<xs:element name="prefs" type="serverPrefs"/>
+					<xs:element name="shells" type="ShellsList"/>
+					<xs:element name="session_setup" type="serverSessionSetup"/>
+					<xs:element name="site-isolation-config" type="siteIsolationConfigOutput"/>
+					<xs:element name="updates" type="updatesOutput"/>
+                    <xs:element name="admin-domain-list" type="domainListOutputType"/>
+					<xs:element name="certificates" type="serverCertificates" minOccurs="0"/>
+				</xs:choice>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SetResultType">
+		<xs:complexContent>
+			<xs:extension base="resultType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ServicesManagementResultType">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:sequence minOccurs="0">
+					<xs:element name="id" type="srvIdType">
+						<xs:annotation>
+							<xs:documentation>Operated service ID</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="InitialSetupResultType">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:sequence minOccurs="0">
+					<xs:element name="server_name" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Since 1.3.5</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="GetAdditionalKeyResultType">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:sequence>
+					<xs:element name="name" type="xs:string" minOccurs="0"/>
+					<xs:element name="key_info" type="additionalKeyType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+    <xs:complexType name="RenewAdditionalKeyResultType">
+        <xs:complexContent>
+            <xs:extension base="resultType">
+                <xs:sequence>
+                    <xs:element name="name" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+	<xs:complexType name="GetAeParametersResultType">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:sequence minOccurs="0">
+					<xs:element name="params" type="aeParamsType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CreateSessionResultType">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:sequence minOccurs="0">
+					<xs:element name="id" type="xs:string"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ProtosList">
+		<xs:sequence>
+			<xs:element name="proto" type="string" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ShellsList">
+		<xs:sequence>
+			<xs:element name="shell" type="shellType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="siteIsolationConfigOutput">
+		<xs:sequence>
+			<xs:element name="property" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="name" type="xs:string"/>
+						<xs:element name="value" type="xs:string" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="updatesOutput">
+		<xs:sequence>
+			<xs:element name="available_update" type="string"/>
+			<xs:element name="available_update_type" type="string"/>
+			<xs:element name="security_updates" type="string"/>
+			<xs:element name="last_installed_update" type="string"/>
+			<xs:element name="install_updates_automatically" type="boolean"/>
+            <xs:element name="install_third_party_updates" type="boolean"/>
+			<xs:element name="install_system_package_updates_automatically" type="boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

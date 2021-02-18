@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="plesk_common.xsd"/>
+	<xs:complexType name="LocaleInput">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="get" type="LocaleGetInput">
+				<xs:annotation>
+					<xs:documentation>Retrieve installed language packs</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="get-message" type="LocaleGetMessageInput">
+				<xs:annotation>
+					<xs:documentation>Retrieve localized message</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="enable" type="LocaleEnableInput"/>
+			<xs:element name="disable" type="LocaleDisableInput"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="LocaleOutput">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="get" type="LocaleGetOutput"/>
+			<xs:element name="get-message" type="LocaleGetMessageOutput"/>
+			<xs:element name="enable" type="LocaleEnableOutput"/>
+			<xs:element name="disable" type="LocaleDisableOutput"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="LocaleGetInput">
+		<xs:sequence>
+			<xs:element name="filter" type="LocaleFilter"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LocaleFilter">
+		<xs:choice>
+			<xs:element name="id" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Locale name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="LocaleGetOutput">
+		<xs:sequence>
+			<xs:element name="result" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="LocaleResultType">
+							<xs:sequence minOccurs="0">
+								<xs:element name="info" type="LocaleInfo"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LocaleInfo">
+		<xs:sequence>
+			<xs:element name="id" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Locale name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="lang" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>language</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="country" type="xs:string"/>
+			<xs:element name="used" type="xs:int"/>
+			<xs:element name="enabled" type="xs:boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LocaleGetMessageInput">
+		<xs:sequence>
+			<xs:element name="filter" type="LocaleGetMessageFilter"/>
+			<xs:element name="id" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Locale name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LocaleGetMessageFilter">
+		<xs:choice>
+			<xs:element name="key" type="xs:string" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Message jey in locale</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="LocaleGetMessageOutput">
+		<xs:sequence>
+			<xs:element name="result" type="LocaleMessageResultType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LocaleDownloadInput">
+		<xs:sequence>
+			<xs:element name="id" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Locale name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LocaleDownloadOutput">
+		<xs:sequence>
+			<xs:element name="result" type="resultType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LocaleEnableInput">
+		<xs:sequence>
+			<xs:element name="filter" type="LocaleFilter"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LocaleEnableOutput">
+		<xs:sequence>
+			<xs:element name="result" type="LocaleResultType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LocaleDisableInput">
+		<xs:sequence>
+			<xs:element name="filter" type="LocaleFilter"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LocaleDisableOutput">
+		<xs:sequence>
+			<xs:element name="result" type="LocaleResultType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LocaleResultType">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:sequence minOccurs="0">
+					<xs:element name="filter-id" type="string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>This node is used for binding operation resull with input value that specified in filter. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="id" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Object ID</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="LocaleMessageResultType">
+		<xs:complexContent>
+			<xs:extension base="resultType">
+				<xs:sequence minOccurs="0">
+					<xs:element name="filter-id" type="string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>This node is used for binding operation resull with input value that specified in filter. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="id" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Object ID</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="message" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Localized message</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

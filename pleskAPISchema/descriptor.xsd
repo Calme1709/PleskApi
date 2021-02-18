@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:complexType name="DesciptorOperatorInputType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="get-domain-physical-hosting">
+				<xs:annotation>
+					<xs:documentation>Retrieves descriptor of phiscal hosting on domain</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice minOccurs="0">
+						<xs:element name="domain-id">
+							<xs:annotation>
+								<xs:documentation>Domain identifier</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="domain-name">
+							<xs:annotation>
+								<xs:documentation>Domain name (Unicode)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-client-permissions">
+				<xs:complexType>
+					<xs:choice minOccurs="0">
+						<xs:element name="client-id">
+							<xs:annotation>
+								<xs:documentation>Client identifier</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="client-login">
+							<xs:annotation>
+								<xs:documentation>Client login</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-domain-user-permissions">
+				<xs:complexType>
+					<xs:choice minOccurs="0">
+						<xs:element name="domain-id">
+							<xs:annotation>
+								<xs:documentation>Domain identifier</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="domain-name">
+							<xs:annotation>
+								<xs:documentation>Domain name (Unicode)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-client-limits">
+				<xs:complexType>
+					<xs:choice minOccurs="0">
+						<xs:element name="client-id">
+							<xs:annotation>
+								<xs:documentation>Client identifier</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="client-login">
+							<xs:annotation>
+								<xs:documentation>Client login</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="get-domain-limits">
+				<xs:complexType>
+					<xs:choice minOccurs="0">
+						<xs:element name="domain-id">
+							<xs:annotation>
+								<xs:documentation>Domain identifier</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="domain-name">
+							<xs:annotation>
+								<xs:documentation>Domain name (Unicode)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="DesciptorOperatorOutputType"/>
+	<xs:complexType name="ExtensionType">
+		<xs:sequence>
+			<xs:any namespace="##targetNamespace" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ObjectDescriptor">
+		<xs:sequence>
+			<xs:element name="property" type="PropertyDescriptor" maxOccurs="unbounded"/>
+			<xs:element name="bind" type="BindType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ChoiceType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="one"/>
+			<xs:pattern value="two"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PropertyType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="int"/>
+			<xs:enumeration value="float"/>
+			<xs:enumeration value="char"/>
+			<xs:enumeration value="passwordChar"/>
+			<xs:enumeration value="uint"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="PropertyDescriptor">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Identifier</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:sequence>
+				<xs:element name="type" type="xs:string"/>
+				<xs:element name="enum" type="EnumElementType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:element name="default-value" minOccurs="0"/>
+			<xs:element name="writable-by" type="string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="label" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Labels the property</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="hint" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Attaches a hint with the property</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="extension" type="ExtensionType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EnumElementType">
+		<xs:sequence>
+			<xs:element name="value" type="string"/>
+			<xs:element name="label" type="xs:string" minOccurs="0"/>
+			<xs:element name="hint" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BindType">
+		<xs:sequence>
+			<xs:element name="ref" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Binding property</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="relevant" type="RelevantType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Defines the conditions when the data bind is applicable.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="read-only" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Restricts the value so it can only be read and not modified.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RelevantType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Property identifer</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="value" type="string"/>
+				<xs:element name="read-only" type="xs:boolean"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="descriptor" type="ObjectDescriptor"/>
+	<xs:complexType name="PropertyValueType">
+		<xs:sequence/>
+	</xs:complexType>
+</xs:schema>

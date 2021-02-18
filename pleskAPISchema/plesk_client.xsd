@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <xs:include schemaLocation="plesk_common.xsd"/>
+    <xs:include schemaLocation="domain_list.xsd"/>
+    <xs:complexType name="clientDatasetType">
+        <xs:annotation>
+            <xs:documentation>Data to be operated</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="gen_info" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>General client info</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="stat" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Client statistics</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="clientData">
+        <xs:annotation>
+            <xs:documentation>Client data</xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name="gen_info" type="clientGetGenInfo" minOccurs="0"/>
+            <xs:element name="stat" type="clientStatType" minOccurs="0"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="clientPerms">
+        <xs:annotation>
+            <xs:documentation>Client Permissions</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="permission" type="PleskPermissionType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="clientAddGenInfo">
+        <xs:annotation>
+            <xs:documentation>Client adding data</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="cname" type="string" minOccurs="0"/>
+            <xs:element name="pname" type="string"/>
+            <xs:element name="login" type="string"/>
+            <xs:element name="passwd" type="string"/>
+            <xs:element name="status" type="objectStatus" default="0" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>0:ACTIVE, 16:DISABLED_BY ADMIN, 4:UNDER BACKUP/RESTORE, 256: EXPIRED</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="phone" type="string" minOccurs="0"/>
+            <xs:element name="fax" type="string" minOccurs="0"/>
+            <xs:element name="email" type="string" minOccurs="0"/>
+            <xs:element name="address" type="string" minOccurs="0"/>
+            <xs:element name="city" type="string" minOccurs="0"/>
+            <xs:element name="state" type="string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Should be filled for US country</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="pcode" type="string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Should be filled for US country</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="country" type="string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Example: US</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="locale" type="string" default="en" minOccurs="0"/>
+            <xs:choice minOccurs="0">
+                <xs:element name="owner-id" type="int"/>
+                <xs:element name="owner-login" type="string"/>
+                <xs:element name="owner-external-id" type="string"/>
+            </xs:choice>
+            <xs:element name="external-id" type="string" minOccurs="0"/>
+            <xs:element name="description" type="string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="clientSetGenInfo">
+        <xs:annotation>
+            <xs:documentation>Client setting data</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="cname" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="string"/>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="pname" type="string" minOccurs="0"/>
+            <xs:element name="login" type="string" minOccurs="0"/>
+            <xs:element name="passwd" type="string" minOccurs="0"/>
+            <xs:element name="status" type="objectStatus" default="0" minOccurs="0"/>
+            <xs:element name="phone" type="string" minOccurs="0"/>
+            <xs:element name="fax" type="string" minOccurs="0"/>
+            <xs:element name="email" type="string" minOccurs="0"/>
+            <xs:element name="address" type="string" minOccurs="0"/>
+            <xs:element name="city" type="string" minOccurs="0"/>
+            <xs:element name="state" type="string" minOccurs="0"/>
+            <xs:element name="pcode" type="string" minOccurs="0"/>
+            <xs:element name="country" type="string" minOccurs="0"/>
+            <xs:element name="locale" type="string" default="en" minOccurs="0"/>
+            <xs:element name="guid" type="NoneType" minOccurs="0"/>
+            <xs:element name="external-id" type="string" minOccurs="0"/>
+            <xs:element name="description" type="string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="clientGetGenInfo">
+        <xs:annotation>
+            <xs:documentation>Client getting data</xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name="cr_date" type="date"/>
+            <xs:element name="cname" type="string"/>
+            <xs:element name="pname" type="string"/>
+            <xs:element name="login" type="string"/>
+            <xs:element name="status" type="objectStatus" default="0"/>
+            <xs:element name="phone" type="string"/>
+            <xs:element name="fax" type="string"/>
+            <xs:element name="email" type="string"/>
+            <xs:element name="address" type="string"/>
+            <xs:element name="city" type="string"/>
+            <xs:element name="state" type="string"/>
+            <xs:element name="pcode" type="string"/>
+            <xs:element name="country" type="string"/>
+            <xs:element name="locale" type="string" default="en"/>
+            <xs:element name="password" type="string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>since 1.3.5</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="password_type" type="string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>since 1.3.5</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="guid" type="string" minOccurs="0"/>
+            <xs:element name="owner-id" type="int" minOccurs="0"/>
+            <xs:element name="owner-login" type="string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Exist only for admins clients(admin)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="vendor-guid" type="string" minOccurs="0"/>
+            <xs:element name="external-id" type="string" minOccurs="0"/>
+            <xs:element name="description" type="string" minOccurs="0"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="clientLimits">
+        <xs:annotation>
+            <xs:documentation>Client Limits</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="resource-policy" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="overuse" minOccurs="0">
+                            <xs:simpleType>
+                                <xs:restriction base="string">
+                                    <xs:enumeration value="block"/>
+                                    <xs:enumeration value="notify"/>
+                                    <xs:enumeration value="normal"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="limit" type="PleskLimitType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="clientStatType">
+        <xs:annotation>
+            <xs:documentation>Client statistics</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="active_domains" type="unsignedInt" default="0"/>
+            <xs:element name="subdomains" type="unsignedInt" default="0"/>
+            <xs:element name="disk_space" type="size" default="0"/>
+            <xs:element name="postboxs" type="unsignedInt" default="0"/>
+            <xs:element name="redirects" type="unsignedInt" default="0"/>
+            <xs:element name="mail_groups" type="unsignedInt" default="0"/>
+            <xs:element name="mail_resps" type="unsignedInt" default="0"/>
+            <xs:element name="mail_lists" type="unsignedInt" default="0"/>
+            <xs:element name="web_users" type="unsignedInt" default="0"/>
+            <xs:element name="data_bases" type="unsignedInt" default="0"/>
+            <xs:element name="traffic" type="size">
+                <xs:annotation>
+                    <xs:documentation>Monthly traffic in bytes</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="traffic_prevday" type="size">
+                <xs:annotation>
+                    <xs:documentation>Total traffic for prev.day ( in bytes)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ipPoolType">
+        <xs:annotation>
+            <xs:documentation>Client's IP pool data</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="ip" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ip-address" type="ip_address"/>
+                        <xs:element name="ip-type" type="ipType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ipPoolOperateType">
+        <xs:annotation>
+            <xs:documentation>Client's IP pool operate data request</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="customer-id" type="id_type"/>
+            <xs:element name="ip_address" type="ip_address" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="poolOperationResult">
+        <xs:annotation>
+            <xs:documentation>IP pool operation result</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="resultType">
+                <xs:choice minOccurs="0">
+                    <xs:element name="ip_address" type="ip_address"/>
+                    <xs:element name="customer-id" type="id_type"/>
+                </xs:choice>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="resultDomainListOutputType">
+        <xs:sequence>
+            <xs:element name="result" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="resultFilterType">
+                            <xs:sequence>
+                                <xs:element name="domains" type="domainListOutputType" minOccurs="0"/>
+                             </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

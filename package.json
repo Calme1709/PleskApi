@@ -11,13 +11,16 @@
     "type": "git",
     "url": "https://www.github.com/Calme1709/PleskApi"
   },
+  "engines": {
+    "node": ">12.0.0"
+  },
   "author": "Callum Law",
   "license": "MIT",
   "devDependencies": {
     "@calme1709/back-end-config": "^2.0.12",
-    "@types/xml2json": "^0.11.3"
+    "@calme1709/cxsd": "^0.3.2"
   },
   "dependencies": {
-    "xml2json": "^0.12.0"
+    "@wikipathways/cxml": "^0.2.14"
   }
 }

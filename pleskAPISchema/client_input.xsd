@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 1999-2020. Plesk International GmbH. All rights reserved. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:include schemaLocation="plesk_client.xsd"/>
+    <xs:complexType name="clientSelectionFilterType">
+        <xs:annotation>
+            <xs:documentation>Fliter clients list</xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:element name="id" type="id_type" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>Client ID</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="login" type="string" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>Client name</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="owner-id" type="int" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation> Owner id </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="owner-login" type="string" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation> Reseller login </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="guid" type="string" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation> Clients GUID </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="external-id" type="string" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="ClientTypeRequest">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="add">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="gen_info" type="clientAddGenInfo"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="get">
+                <xs:annotation>
+                    <xs:documentation>Get clients data from server</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="filter" type="clientSelectionFilterType">
+                            <xs:annotation>
+                                <xs:documentation>Filter clients to be refreshed</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="dataset" type="clientDatasetType">
+                            <xs:annotation>
+                                <xs:documentation>Client information to be updated</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="del">
+                <xs:annotation>
+                    <xs:documentation>Delete client(s) from server</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="filter" type="clientSelectionFilterType">
+                            <xs:annotation>
+                                <xs:documentation>Fliter clients to be deleted</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="set">
+                <xs:annotation>
+                    <xs:documentation>Set client properties</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="filter" type="clientSelectionFilterType">
+                            <xs:annotation>
+                                <xs:documentation>Filter clients to be refreshed</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="values">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="gen_info" type="clientSetGenInfo" minOccurs="0">
+                                        <xs:annotation>
+                                            <xs:documentation>client client info</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="convert-to-reseller">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="filter" type="clientSelectionFilterType">
+                            <xs:annotation>
+                                <xs:documentation>Fliter resellers/clients</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="reseller-plan-name" type="string" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="change-owner">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="filter" type="clientSelectionFilterType">
+                            <xs:annotation>
+                                <xs:documentation>Filter clients</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="new-owner-login" type="string"/>
+                        <xs:element name="ipV4-address" type="ip_address" maxOccurs="unbounded" minOccurs="0"/>
+                        <xs:element name="ipV6-address" type="ip_address" maxOccurs="unbounded" minOccurs="0"/>
+                        <xs:element name="plan-name" type="string" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="get-domain-list">
+                <xs:annotation>
+                    <xs:documentation>Get list of domains for a client</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="filter" type="clientSelectionFilterType">
+                            <xs:annotation>
+                                <xs:documentation>Filter clients</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="clientPriceInput">
+        <xs:sequence>
+            <xs:element name="value" type="priceInput" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
