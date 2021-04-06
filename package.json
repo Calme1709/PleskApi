@@ -7,7 +7,7 @@
   "scripts": {
     "build": "node bin/generateTypescriptXMLSchema.js && tsc",
     "lint": "eslint --cache --config node_modules/@calme1709/back-end-config/.eslintrc.js --ext ts src/**/*",
-	"prepublishOnly": "build"
+	"prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
