@@ -1,49 +1,49 @@
 import * as Primitive from "./xml-primitives";
 
 // Source files:
-// file:///tmp/plesk_api_schema0n9Gk6/agent_output.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/aps.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/certificate_output.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/client_output.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/common.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/database_output.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/descriptor.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/dns_output.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/domain_addon_template.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/domain_list.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/domain_template.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/domainalias_output.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/event_log_output.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/event_log_types.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/extension.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/ftpuser.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/ip_output.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/locale.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/logrotation.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/mail_output.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/php_handler.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/plesk_client.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/plesk_common.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/plesk_custom_button.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/plesk_db.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/plesk_dns.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/plesk_domain.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/plesk_domainalias.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/plesk_mailname.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/plesk_secretkeys.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/plesk_server.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/protected_dir.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/reseller.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/reseller_template.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/secret_key_output.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/server_output.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/session.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/site.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/subdomain.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/ui_output.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/upload_output.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/virtdir.xsd
-// file:///tmp/plesk_api_schema0n9Gk6/webspace.xsd
+// file:///tmp/plesk_api_schemajubgFc/agent_output.xsd
+// file:///tmp/plesk_api_schemajubgFc/aps.xsd
+// file:///tmp/plesk_api_schemajubgFc/certificate_output.xsd
+// file:///tmp/plesk_api_schemajubgFc/client_output.xsd
+// file:///tmp/plesk_api_schemajubgFc/common.xsd
+// file:///tmp/plesk_api_schemajubgFc/database_output.xsd
+// file:///tmp/plesk_api_schemajubgFc/descriptor.xsd
+// file:///tmp/plesk_api_schemajubgFc/dns_output.xsd
+// file:///tmp/plesk_api_schemajubgFc/domain_addon_template.xsd
+// file:///tmp/plesk_api_schemajubgFc/domain_list.xsd
+// file:///tmp/plesk_api_schemajubgFc/domain_template.xsd
+// file:///tmp/plesk_api_schemajubgFc/domainalias_output.xsd
+// file:///tmp/plesk_api_schemajubgFc/event_log_output.xsd
+// file:///tmp/plesk_api_schemajubgFc/event_log_types.xsd
+// file:///tmp/plesk_api_schemajubgFc/extension.xsd
+// file:///tmp/plesk_api_schemajubgFc/ftpuser.xsd
+// file:///tmp/plesk_api_schemajubgFc/ip_output.xsd
+// file:///tmp/plesk_api_schemajubgFc/locale.xsd
+// file:///tmp/plesk_api_schemajubgFc/logrotation.xsd
+// file:///tmp/plesk_api_schemajubgFc/mail_output.xsd
+// file:///tmp/plesk_api_schemajubgFc/php_handler.xsd
+// file:///tmp/plesk_api_schemajubgFc/plesk_client.xsd
+// file:///tmp/plesk_api_schemajubgFc/plesk_common.xsd
+// file:///tmp/plesk_api_schemajubgFc/plesk_custom_button.xsd
+// file:///tmp/plesk_api_schemajubgFc/plesk_db.xsd
+// file:///tmp/plesk_api_schemajubgFc/plesk_dns.xsd
+// file:///tmp/plesk_api_schemajubgFc/plesk_domain.xsd
+// file:///tmp/plesk_api_schemajubgFc/plesk_domainalias.xsd
+// file:///tmp/plesk_api_schemajubgFc/plesk_mailname.xsd
+// file:///tmp/plesk_api_schemajubgFc/plesk_secretkeys.xsd
+// file:///tmp/plesk_api_schemajubgFc/plesk_server.xsd
+// file:///tmp/plesk_api_schemajubgFc/protected_dir.xsd
+// file:///tmp/plesk_api_schemajubgFc/reseller.xsd
+// file:///tmp/plesk_api_schemajubgFc/reseller_template.xsd
+// file:///tmp/plesk_api_schemajubgFc/secret_key_output.xsd
+// file:///tmp/plesk_api_schemajubgFc/server_output.xsd
+// file:///tmp/plesk_api_schemajubgFc/session.xsd
+// file:///tmp/plesk_api_schemajubgFc/site.xsd
+// file:///tmp/plesk_api_schemajubgFc/subdomain.xsd
+// file:///tmp/plesk_api_schemajubgFc/ui_output.xsd
+// file:///tmp/plesk_api_schemajubgFc/upload_output.xsd
+// file:///tmp/plesk_api_schemajubgFc/virtdir.xsd
+// file:///tmp/plesk_api_schemajubgFc/webspace.xsd
 
 
 interface BaseType {
@@ -456,7 +456,6 @@ interface _BindType extends BaseType {
 export interface BindType extends _BindType { constructor: { new(): BindType }; }
 export var BindType: { new(): BindType };
 
-export type boolean = boolean;
 type _boolean = Primitive._boolean;
 
 export type booleanWithDefault = ("true" | "false" | "default");
@@ -6089,7 +6088,6 @@ interface _statType extends BaseType {
 export interface statType extends _statType { constructor: { new(): statType }; }
 export var statType: { new(): statType };
 
-export type string = string;
 type _string = Primitive._string;
 
 interface _SubdomainAddInputType extends _SubdomainObjectType {}
