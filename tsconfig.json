@@ -5,7 +5,7 @@
 		"lib": [
 			"ESNext",
 			"DOM"
-        ],
+		],
 		"removeComments": true,
 		"downlevelIteration": true,
 		"experimentalDecorators": true,
@@ -27,8 +27,8 @@
 		"resolveJsonModule": true,
 		"baseUrl": "./",
 		"allowJs": true,
-        "paths": {
+		"paths": {
 			"@utils": [ "src/utils/index.ts" ]
-        }
+		}
 	}
 }
