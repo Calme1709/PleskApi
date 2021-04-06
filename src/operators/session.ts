@@ -1,6 +1,17 @@
 import Operator from "./base";
 import PleskApi from "..";
 
+interface ISessionInfo {
+	id: string;
+	type: string;
+	ipAddress: string;
+	login: string;
+	"login-time":
+	string;
+	idle: string;
+}
+
+
 /**
  * The operator for managing Plesk Control Panel sessions.
  */
@@ -20,16 +31,6 @@ export default class Session extends Operator<"session"> {
 	 * @returns Information about all of the currently active sessions.
 	 */
 	public async get() {
-		interface ISessionInfo {
-			id: string;
-			type: string;
-			ipAddress: string;
-			login: string;
-			"login-time":
-			string;
-			idle: string;
-		}
-
 		interface IResponse {
 			session: ISessionInfo | ISessionInfo[] | undefined;
 		}
