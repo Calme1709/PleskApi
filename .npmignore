@@ -1,0 +1,9 @@
+src/
+pleskAPISchema/
+.vscode/
+bin/
+node_modules/
+.eslintcache
+.gitignore
+.npmignore
+tsconfig.json
