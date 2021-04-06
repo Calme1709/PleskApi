@@ -4,8 +4,9 @@
   "description": "Javascript API for interacting with a remote plesk instance",
   "main": "dist/index.js",
   "scripts": {
-    "build": "node bin/generateTypescriptXMLSchema.js && npx back-end-config build",
-    "lint": "eslint --cache --config node_modules/@calme1709/back-end-config/.eslintrc.js --ext ts src/**/*"
+    "build": "node bin/generateTypescriptXMLSchema.js && tsc",
+    "lint": "eslint --cache --config node_modules/@calme1709/back-end-config/.eslintrc.js --ext ts src/**/*",
+	"prepublishOnly": "build"
   },
   "repository": {
     "type": "git",
