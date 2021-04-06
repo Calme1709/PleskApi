@@ -4,7 +4,7 @@
   "description": "Javascript API for interacting with a remote plesk instance",
   "main": "dist/index.js",
   "scripts": {
-    "build": "npx back-end-config build",
+    "build": "node bin/generateTypescriptXMLSchema.js && npx back-end-config build",
     "lint": "eslint --cache --config node_modules/@calme1709/back-end-config/.eslintrc.js --ext ts src/**/*"
   },
   "repository": {
@@ -17,7 +17,7 @@
   "author": "Callum Law",
   "license": "MIT",
   "devDependencies": {
-    "@calme1709/back-end-config": "^2.0.12",
+    "@calme1709/back-end-config": "^2.0.18",
     "@calme1709/cxsd": "^0.3.2"
   },
   "dependencies": {

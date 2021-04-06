@@ -26,6 +26,7 @@
 		"watch": false,
 		"resolveJsonModule": true,
 		"baseUrl": "./",
+		"allowJs": true,
         "paths": {
 			"@utils": [ "src/utils/index.ts" ]
         }
