@@ -17,8 +17,8 @@
   "author": "Callum Law",
   "license": "MIT",
   "devDependencies": {
-    "@calme1709/back-end-config": "^2.0.18",
-    "@calme1709/cxsd": "^0.3.2"
+    "@calme1709/back-end-config": "^2.0.20",
+    "@calme1709/cxsd": "^0.3.9"
   },
   "dependencies": {
     "@wikipathways/cxml": "^0.2.14"
