@@ -26,11 +26,10 @@
 		"watch": false,
 		"resolveJsonModule": true,
 		"baseUrl": "src/",
-		"rootDir": "src/",
 		"outDir": "dist/",
-		"declaration": true,
-		"paths": {
-			"@utils": [ "utils/index.ts" ]
-		}
-	}
+		"declaration": true
+	},
+	"files": [
+		"src/index.ts"
+	]
 }

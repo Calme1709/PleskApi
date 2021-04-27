@@ -5,9 +5,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "node bin/generateTypescriptXMLSchema.js && tsc",
+    "build": "tsc",
     "lint": "eslint --cache --config node_modules/@calme1709/back-end-config/.eslintrc.js --ext ts src/**/*",
-	"prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -20,9 +20,9 @@
   "license": "MIT",
   "devDependencies": {
     "@calme1709/back-end-config": "^2.0.20",
-    "@calme1709/cxsd": "^0.3.9"
+    "@types/node-fetch": "^2.5.10"
   },
   "dependencies": {
-    "@wikipathways/cxml": "^0.2.14"
+    "node-fetch": "^2.6.1"
   }
 }

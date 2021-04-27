@@ -1,15 +1,16 @@
 import {
-	Operator,
 	SecretKey,
-	Server,
 	Test,
-	Certificate,
-	Webspace,
-	Session,
-	Site
+	Certificate
 } from "./operators";
 
-type OperatorName = "certificate" | "secret_key" | "server" | "session" | "site" | "webspace";
+const operators = {
+	secret_key: SecretKey,
+	certificate: Certificate
+};
+
+type OperatorName = keyof typeof operators;
+type Operator = InstanceType<(typeof operators)[OperatorName]>;
 
 export interface IPleskCredentials {
 	login: string;
@@ -22,9 +23,9 @@ export interface IPleskCredentials {
 export default class PleskApi {
 	public readonly hostname: string;
 
-	public credentials: { HTTP_AUTH_LOGIN: string; HTTP_AUTH_PASSWD: string } | { KEY: string };
+	public credentials: { "X-API-Key": string } | { Authorization: string };
 
-	private readonly operatorCache: { [key in OperatorName]?: Operator<string> } = {};
+	private readonly operatorCache: { [key in OperatorName]?: Operator } = {};
 
 	/**
 	 * Create a new instance of the JavaScript API and connect with an API key.
@@ -48,8 +49,8 @@ export default class PleskApi {
 		this.hostname = hostname;
 
 		this.credentials = typeof apiKeyOrCredentials === "string"
-			? { KEY: apiKeyOrCredentials }
-			: { HTTP_AUTH_LOGIN: apiKeyOrCredentials.login, HTTP_AUTH_PASSWD: apiKeyOrCredentials.password };
+			? { "X-API-Key": apiKeyOrCredentials }
+			: { Authorization: `Basic ${Buffer.from(`${apiKeyOrCredentials.login}:${apiKeyOrCredentials.password}`).toString("base64")}` };
 	}
 
 	/**
@@ -59,7 +60,7 @@ export default class PleskApi {
 	 */
 	//eslint-disable-next-line @typescript-eslint/naming-convention
 	public get secret_key() {
-		return this.getOperator("secret_key") as unknown as SecretKey;
+		return this.getOperator("secret_key");
 	}
 
 	/**
@@ -68,56 +69,16 @@ export default class PleskApi {
 	 * @returns The certificate operator.
 	 */
 	public get certificate() {
-		return this.getOperator("certificate") as unknown as Certificate;
-	}
-
-	/**
-	 * The server operator.
-	 *
-	 * @returns The server operator.
-	 */
-	public get server() {
-		return this.getOperator("server") as unknown as Server;
-	}
-
-	/**
-	 * The webspace operator.
-	 *
-	 * @returns The webspace operator.
-	 */
-	public get webspace() {
-		return this.getOperator("webspace") as unknown as Webspace;
-	}
-
-	/**
-	 * The session operator.
-	 *
-	 * @returns The session operator.
-	 */
-	public get session() {
-		return this.getOperator("session") as unknown as Session;
-	}
-
-	/**
-	 * The site operator.
-	 *
-	 * @returns The site operator.
-	 */
-	public get site() {
-		return this.getOperator("site") as unknown as Site;
+		return this.getOperator("certificate");
 	}
 
 	/**
 	 * Test the connection to a remote plesk instance.
+	 *
+	 * @returns Whether we are connected.
 	 */
 	public async testConnection() {
-		const test = new Test(this);
-
-		const error = await test.testConnection();
-
-		if(error !== null) {
-			throw new Error(error);
-		}
+		return new Test(this).testConnection();
 	}
 
 	/**
@@ -127,24 +88,17 @@ export default class PleskApi {
 	 *
 	 * @returns The operator.
 	 */
-	private getOperator(operatorName: OperatorName) {
-		if(operatorName in this.operatorCache) {
-			return this.operatorCache[operatorName];
+	private getOperator<T extends OperatorName>(operatorName: T): InstanceType<(typeof operators)[T]> {
+		const existingOperator = this.operatorCache[operatorName];
+
+		if(existingOperator !== undefined) {
+			return existingOperator as InstanceType<(typeof operators)[T]>;
 		}
 
-		const operators = {
-			secret_key: SecretKey,
-			certificate: Certificate,
-			server: Server,
-			webspace: Webspace,
-			session: Session,
-			site: Site
-		};
-
-		const operator = new operators[operatorName](this);
+		const operator = new (operators[operatorName])(this);
 
 		this.operatorCache[operatorName] = operator;
 
-		return operator;
+		return operator as InstanceType<(typeof operators)[T]>;
 	}
 }

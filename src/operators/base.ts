@@ -1,177 +1,71 @@
-import https from "https";
-import { Buffer } from "buffer";
-import { parseXmlToJson } from "@utils";
+import fetch from "node-fetch";
 import PleskApi from "..";
 
-interface IApiErrorResponse {
-	packet: {
-		system: {
-			errtext: string;
-			errcode: number;
-			status: "error";
-		};
-	};
-}
-
-interface IApiSuccessResponse<Operator extends string, Operation extends string, ResponseType> {
-	packet: {
-		[a in Operator]: {
-			[b in Operation]: {
-				result: ResponseType;
-			};
-		};
-	};
-}
-
-type ApiResponse<Operator extends string, Operation extends string, ResponseType> =
-	IApiErrorResponse |
-	IApiSuccessResponse<Operator, Operation, ResponseType>;
+type CommandExecutionResponse = { code: 0; stderr: ""; stdout: string } | { code: 1; stderr: string; stdout: "" };
 
 /**
  * The class that all API operators derive from.
  */
-export default class Operator<OperatorName extends string> {
-	private readonly operatorName: OperatorName;
-
+export default class Operator {
 	private readonly pleskApi: PleskApi;
 
 	/**
 	 * Create an operator.
 	 *
-	 * @param operatorName - The name of the operator.
 	 * @param pleskApi - The API instance this operator is associated with.
 	 */
-	public constructor(operatorName: OperatorName, pleskApi: PleskApi) {
+	public constructor(pleskApi: PleskApi) {
 		this.pleskApi = pleskApi;
-
-		this.operatorName = operatorName;
 	}
 
 	/**
-	 * Make an XML API request of the specified operation with the passed data.
+	 * Execute a command on the remote plesk instance.
 	 *
-	 * @param operation - The operation to execute.
-	 * @param dataNodes - The data to send with the XML API request.
+	 * @param command - The command, executed through the Plesk CLI.
+	 * @param params - The parameters to the command.
 	 *
-	 * @returns A promise that resolves to the API Response.
+	 * @returns - A promise which resolves to the response from the API.
 	 */
-	//TODO: Make this protected again
-	public xmlApiRequest<ResponseType, OperationName extends string>(
-		operation: OperationName,
-		dataNodes: string[] | string | undefined
-	) {
+	protected async execute(command: string, params?: string[]) {
+		const response = await this.request<CommandExecutionResponse>(`/cli/${command}/call`, "POST", { params });
+
+		if(response.code !== 0) {
+			throw this.handleError(response.stderr);
+		}
+
+		return response.stdout;
+	}
+
+	/**
+	 * Make an API request.
+	 *
+	 * @param path - The API path to make the request to.
+	 * @param httpMethod - The HTTP method to use for this requst.
+	 * @param body - The POST body to include in the request.
+	 *
+	 * @returns - The response from the API.
+	 */
+	protected request<ResponseType>(path: string, httpMethod: "GET" | "POST" = "POST", body?: Record<string, any>) {
+		const bodyContent = JSON.stringify(body);
+
 		return new Promise<ResponseType>((resolve, reject) => {
-			const requestBody = `<?xml version="1.0" encoding="utf-8"?>${this.generatePacket(operation, dataNodes)}`;
-
-			const req = https.request({
-				method: "POST",
-				host: this.pleskApi.hostname,
-				port: 8443,
-				path: "/enterprise/control/agent.php",
-				headers: {
-					"Content-Type": "text/xml",
-					"Content-Length": Buffer.byteLength(requestBody),
-					...this.pleskApi.credentials
+			fetch(
+				`https://${this.pleskApi.hostname}:8443/api/v2/${path}`,
+				{
+					headers: {
+						"Content-Type": "application/json",
+						"Content-Length": bodyContent.length.toString(),
+						...this.pleskApi.credentials
+					},
+					method: httpMethod,
+					body: bodyContent
 				}
-			}, response => {
-				let data = "";
-
-				response.on("data", chunk => {
-					data += chunk;
-				});
-
-				response.on("end", async () => {
-					const result = await parseXmlToJson<ApiResponse<OperatorName, OperationName, ResponseType>>(data);
-
-					//TODO: Custom parsing of Arrays (admin-domain-list, property, etc)
-					if("system" in result.packet) {
-						reject(this.handleError(result.packet.system.errtext));
-					} else {
-						resolve(result.packet[this.operatorName][operation].result);
-					}
-				});
+			).then(async res => {
+				resolve(await res.json());
+			}).catch((reason: string) => {
+				reject(this.handleError(`Error making API call: ${reason}`));
 			});
-
-			req.on("error", err => {
-				reject(this.handleError(err.message));
-			});
-
-			req.write(requestBody);
-			req.end();
 		});
-	}
-
-	/**
-	 * Generate a node if the data is defined, else return an empty string.
-	 *
-	 * @param node - The name of the node.
-	 * @param nodeData - The data of the node.
-	 *
-	 * @returns The generated node or empty string.
-	 */
-	protected createOptionalDataNode(node: string, nodeData?: Array<string | undefined> | string) {
-		if(nodeData !== undefined && nodeData !== "") {
-			return this.createDataNode(node, nodeData as string);
-		}
-
-		if(Array.isArray(nodeData) && nodeData.some(data => !(data === undefined || data === ""))) {
-			return this.createDataNode(node, nodeData as string[]);
-		}
-
-		return "";
-	}
-
-	/**
-	 * Generate a data node.
-	 *
-	 * @param node - The name of the node.
-	 * @param nodeData - The data of the node.
-	 *
-	 * @returns The generated node.
-	 */
-	protected createDataNode(node: string, nodeData: string[] | string) {
-		if(typeof nodeData === "string") {
-			return `
-				<${node}>${nodeData}</${node}>
-			`;
-		}
-
-		return `
-			<${node}>${nodeData.join("")}</${node}>
-		`;
-	}
-
-	/**
-	 * Generate an XML packet for an API request given the structure and data of the request.
-	 *
-	 * @param operation - The operation to perform, for example create.
-	 * @param dataNodes - The data to send with the request.
-	 *
-	 * @returns The XML packet to send to the server.
-	 */
-	private generatePacket(operation: string, dataNodes?: string[] | string) {
-		let dataNodeString: string;
-
-		switch (typeof dataNodes) {
-			case "undefined":
-				dataNodeString = "";
-				break;
-			case "string":
-				dataNodeString = dataNodes;
-				break;
-			default:
-				dataNodeString = dataNodes.join("");
-		}
-
-		return `
-			<packet>
-				<${this.operatorName}>
-					<${operation}>
-						${dataNodeString}
-					</${operation}>
-				</${this.operatorName}>
-			</packet>
-		`.replace(/[\t]/g, "");
 	}
 
 	/**
@@ -181,7 +75,7 @@ export default class Operator<OperatorName extends string> {
 	 *
 	 * @returns The error to throw.
 	 */
-	private handleError(error: string) {
+	 private handleError(error: string) {
 		if(process.env.NODE_ENV === "staging") {
 			console.error(error);
 		}
