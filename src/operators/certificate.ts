@@ -1,4 +1,3 @@
-import Operator from "./base";
 import PleskApi from "..";
 
 export interface ICertificateContent {
@@ -19,14 +18,16 @@ export interface IOrganizationalInfo {
 /**
  * The operator for managing SSL certificates.
  */
-export default class Certificate extends Operator {
+export default class Certificate {
+	private readonly pleskApi: PleskApi;
+
 	/**
-	 * Initialize the certificate operator.
+	 * Create a new Certificate operator.
 	 *
 	 * @param pleskApi - The plesk API instance this operator is associated with.
 	 */
 	public constructor(pleskApi: PleskApi) {
-		super(pleskApi);
+		this.pleskApi = pleskApi;
 	}
 
 	/**
@@ -38,8 +39,10 @@ export default class Certificate extends Operator {
 	 * @param key - The path on the remote instance to the Private Key file.
 	 * @param cert - The path on the remote instance to the Certificate file.
 	 * @param cacert - The path on the remote instance to the CA Certificate file.
-	 * @param domain - The domain associated with the repository this certificate should be created in. If this is undefined it will be created in the admin repository.
+	 * @param domain - The domain associated with the repository this certificate should be created in.
+	 * If this is undefined it will be created in the admin repository.
 	 */
+	//eslint-disable-next-line max-params
 	public async create(
 		name: string,
 		csr: string,
@@ -48,7 +51,7 @@ export default class Certificate extends Operator {
 		cacert: string,
 		domain?: string
 	) {
-		const response = await this.execute("certificate", [
+		const response = await this.pleskApi.execute("certificate", [
 			"-c",
 			name,
 			"-csr-file",
@@ -72,7 +75,7 @@ export default class Certificate extends Operator {
 	 * @param domain - The domain associated with the repository this certificate should be removed from. If this is undefined it will be removed from the admin repository.
 	 */
 	public async remove(name: string, domain?: string) {
-		await this.execute("certificate", [
+		await this.pleskApi.execute("certificate", [
 			"-r",
 			name,
 			...this.getRepositoryArgumentFromDomain(domain)
@@ -88,7 +91,7 @@ export default class Certificate extends Operator {
 	 */
 	//eslint-disable-next-line @typescript-eslint/naming-convention
 	public async list(domain?: string) {
-		const response = await this.execute("certificate", [
+		const response = await this.pleskApi.execute("certificate", [
 			"--list",
 			...this.getRepositoryArgumentFromDomain(domain)
 		]);
