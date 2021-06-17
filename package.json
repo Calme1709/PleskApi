@@ -19,7 +19,7 @@
   "author": "Callum Law",
   "license": "MIT",
   "devDependencies": {
-    "@calme1709/back-end-config": "^2.0.20",
+    "@calme1709/back-end-config": "^2.0.21",
     "@types/node-fetch": "^2.5.10"
   },
   "dependencies": {
