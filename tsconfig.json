@@ -6,7 +6,7 @@
 			"ESNext",
 			"DOM"
 		],
-		"removeComments": true,
+		"removeComments": false,
 		"downlevelIteration": true,
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,

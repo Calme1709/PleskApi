@@ -72,7 +72,8 @@ export default class Certificate {
 	 * Remove a specified certificate from the server.
 	 *
 	 * @param name - This specifies the name of certificate that should be deleted.
-	 * @param domain - The domain associated with the repository this certificate should be removed from. If this is undefined it will be removed from the admin repository.
+	 * @param domain - The domain associated with the repository this certificate should be removed from.
+	 * If this is undefined it will be removed from the admin repository.
 	 */
 	public async remove(name: string, domain?: string) {
 		await this.pleskApi.execute("certificate", [
@@ -85,11 +86,11 @@ export default class Certificate {
 	/**
 	 * Get a list of certificates from a specified repository on the remote server.
 	 *
-	 * @param domain - The domain associated with the repository that should be listed. If this is undefined the admin repository will be listed.
+	 * @param domain - The domain associated with the repository that should be listed.
+	 * If this is undefined the admin repository will be listed.
 	 *
 	 * @returns A list of certificates.
 	 */
-	//eslint-disable-next-line @typescript-eslint/naming-convention
 	public async list(domain?: string) {
 		const response = await this.pleskApi.execute("certificate", [
 			"--list",
