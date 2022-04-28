@@ -51,7 +51,7 @@ export default class Certificate {
 		cacert: string,
 		domain?: string
 	) {
-		const response = await this.pleskApi.execute("certificate", [
+		await this.pleskApi.execute("certificate", [
 			"-c",
 			name,
 			"-csr-file",
