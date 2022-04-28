@@ -105,6 +105,24 @@ export default class Certificate {
 			.map(line => line.slice(17));
 	}
 
+	/**
+	 * Update an existing certificate.
+	 *
+	 * @param currentName - The current name of the certificate.
+	 * @param newName - The new name of the certificate.
+	 * @param domain - The domain associated with the repository that contains the certificate.
+	 * If this is undefined the admin repository will be used.
+	 */
+	public async update(currentName: string, newName: string, domain?: string) {
+		await this.pleskApi.execute("certificate", [
+			"--update",
+			currentName,
+			"--new-name",
+			newName,
+			...this.getRepositoryArgumentFromDomain(domain)
+		]);
+	}
+
 	//TODO: Implement --update and --assign-cert
 
 	/**
